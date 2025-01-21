@@ -33,6 +33,7 @@ class TestSimpleHTTPServer(unittest.TestCase):
         self.assertIn("text/html", response.headers['Content-Type'])
 
         # Verifica que el contenido HTML esperado esté en la respuesta
+        self.assertIn("<p> Web de PlanC </p>", response.text)
         self.assertIn("<h1>Hola desde un servidor Python</h1>", response.text)
         self.assertIn("<p>Este es un servidor simple que responde a solicitudes GET.</p>", response.text)
 
