@@ -10,6 +10,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         # Contenido HTML que queremos devolver
         html_content = """<!DOCTYPE html>
+        <p> Web de PlanC </p>
         <html lang='en'>
         <head>
             <meta charset='UTF-8'>
