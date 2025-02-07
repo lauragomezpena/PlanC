@@ -5,46 +5,55 @@ body {
     padding: 0;
     background-color: #f0f4f8;
     color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Asegura que el header, main y footer se distribuyan correctamente */
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    height: 90%; /* Asegura que el body ocupe toda la altura de la ventana */
+}
+
+header {
+    grid-area: header;
+    text-align: center;
+    background-color: #668eba; /* Color del rectángulo */
+    color: white;
+    padding: 0.5%;
+}
+
+main {
+    grid-area: main;
+    background: #ffffff;
+    width: 50%;
+    padding: 2%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 0 auto; /* Centra el main horizontalmente */
+}
+
+footer {
+    grid-area: footer;
+    text-align: center;
+    background-color: #f0f4f8;
+    padding: 10px;
 }
 
 /* Header */
-header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
 header h1 {
-    font-size: 2.5rem;
-    color: #007BFF;
+    font-size: 3rem;
     margin: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 123, 255, 0.4);
 }
 
 header h2 {
     font-size: 1.2rem;
     color: #555;
-    margin: 5px 0 20px;
-}
-
-/* Main Content */
-main {
-    background: #ffffff;
-    width: 90%;
-    max-width: 500px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-main p {
-    font-size: 1rem;
-    margin-bottom: 5px;
-    color: #444;
+    margin: 0px 0 10px;
 }
 
 /* Form */
@@ -57,7 +66,7 @@ form {
 form label {
     text-align: left;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     font-size: 0.9rem;
 }
 
@@ -80,17 +89,24 @@ form input:focus {
 }
 
 /* Buttons */
+form .botones {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
 form button {
-    padding: 12px;
-    font-size: 1rem;
+    padding: 8px 15px;
+    font-size: 0.9rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 1;
 }
 
 form button[type="button"] {
-    background-color: #6c757d;
+    background-color: #87898b;
     color: #fff;
 }
 
@@ -99,7 +115,7 @@ form button[type="button"]:hover {
 }
 
 form button[type="submit"] {
-    background-color: #007BFF;
+    background-color: #668eba;
     color: #fff;
 }
 
@@ -111,18 +127,18 @@ form button:active {
     transform: scale(0.98);
 }
 
-/* Footer */
-footer {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #555;
-}
-
 footer b {
     color: #333;
 }
 
 footer i {
     color: #777;
+}
+
+.logo {
+    position: absolute;
+    top: 1.2%;
+    left: 2%;
+    width: 7%; 
+    height: 9%;
 }

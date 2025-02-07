@@ -4,41 +4,69 @@
         <meta charset="utf-8">
         <title>PlanC - Register</title>
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="normalize.css">
+        <link rel="stylesheet" href="components.css">
     </head>
     <body>
         <header>
+            <a href="index.html">
+                <img src="logo2.jpg" class="logo">
+            </a>
             <h1>Register</h1>
             <h2>Si ya tienes cuenta, Inicia Sesión</h2>
         </header>
         <main>
-            <p>Rellena los datos para Registrarse</p>
+            Rellena los datos para Registrarse
 
-            <form method="post">
-                <label for="direccion">Dirección</label>
-                <input id="direccion" type="text"/>
-                <p></p>
+            <form method="post" id ="registro">
                 <label for="name">Nombre</label>
                 <input id="name" type="text"/>
-                <p></p>
+                <label for="apellido">Apellido</label>
+                <input id="apellidp" type="text"/>
+                <label for="dni">DNI</label>
+                <input id="dni" type="text"/>
+                <label for="direccion">Dirección</label>
+                <input id="direccion" type="text"/>
+
+                <label for="opciones">Comunidad</label>
+                <select id="opciones" name="opciones">
+                    <option value="opcion1">Madrid</option>
+                    <option value="opcion2">Comunidad Valenciana</option>
+                </select>
+    
+                <label for="opciones">Ciudad:</label>
+                <select id="opciones" name="opciones">
+                    <option value="opcion1">Madrid</option>
+                    <option value="opcion2">Valencia</option>
+                    <option value="opcion3">Alicante</option>
+                </select>
+
                 <label for="email">Correo Electrónico</label>
                 <input id="email" type="email"/>
-                <p></p>
+
                 <label for="user">Usuario</label>
                 <input id="user" type="text"/>
-                <p></p>
+
                 <label for="passwd">Contraseña</label>
                 <input id="passwd" type="password"/>
-                <p></p>
+
                 <label for="repeatpasswd">Repetir contraseña</label>
                 <input id="repeatpasswd" type="password"/>
-                <p></p>
+
                 <label for="image">Imagen</label>
                 <input id="image" type="file"/>
-                <p></p>
-                <button type="button">Inicio de Sesión</button>
-                <button type="submit">Limpiar Formulario</button>
-                <button type="submit">Register</button>
+
+                <button type="submit" >Registrar</button>
+                <div class="botones">
+                    <button type="button">Limpiar Formulario</button>
+                    <button type="button" onclick="window.location.href='login.html'">Inicio de Sesión</button>
+                </div>
+
             </form>
+
+        <script>  
+
+        </script>   
         </main>
         <footer>
             <p>Creado por <b>María Fernanda Marcos Gámez y Laura Gómez Peña</b> - <i>2025</i></p>
