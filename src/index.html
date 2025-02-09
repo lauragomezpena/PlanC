@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>PlanC - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+
+    <div id="header-container"></div>
+
+    <main>
+        <h1>Bienvenido a Plan C</h1>
+        <h2>¡El mejor sitio para comprar al mejor precio!</h2>
+        <p>Haz una búsqueda</p>
+
+        <form method="post">
+            <label for="busqueda">Búsqueda</label>
+            <input id="busqueda" type="text"/>
+            <div class="botones">
+                <button type="button" onclick="window.location.href='login.html'">Inicio de sesión</button>
+                <button type="button" onclick="window.location.href='register.html'">Register</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>Creado por <b>María Fernanda Marcos Gámez y Laura Gómez Peña</b> - <i>2025</i></p>
+    </footer>
+
+    <script>
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header-container").innerHTML = data)
+            .catch(error => console.error("Error al cargar el header:", error));
+    </script>
+
+</body>
+</html>
