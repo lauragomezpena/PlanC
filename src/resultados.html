@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Resultados de búsqueda</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+
+    <div id="header-container"></div>
+    
+    <main>
+        <h1>Resultados de búsqueda</h1>
+        <div id="resultados" class="resultados-container"></div>
+        <button onclick="window.location.href='index.html'">Volver</button>
+    </main>
+    
+    <footer>
+        <p>Creado por <b>María Fernanda Marcos Gámez y Laura Gómez Peña</b> - <i>2025</i></p>
+    </footer>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get("q").toLowerCase();
+            const resultadosContainer = document.getElementById("resultados");
+
+            const productos = {
+                "libros": [
+                    { nombre: "1984", precio: "15€", imagen: "1984.jpg" },
+                    { nombre: "Harry Potter: Complete edition", precio: "60€", imagen: "harrypotter.jpg" }
+                ],
+                "ordenadores": [
+                    { nombre: "Laptop HP", precio: "400€", imagen: "hp.jpg" },
+                    { nombre: "MacBook Pro", precio: "700€", imagen: "macbookpro.jpg" }
+                ],
+                "videojuegos": [
+                    { nombre: "Mario Kart Deluxe", precio: "60€", imagen: "mariokart.jpg" },
+                    { nombre: "FIFA 25", precio: "70€", imagen: "fifa25.jpg" }
+                ]
+            };
+
+            if (productos[query]) {
+                productos[query].forEach(producto => {
+                    const div = document.createElement("div");
+                    div.classList.add("producto");
+                    div.innerHTML = `
+                        <img src="imgs/${producto.imagen}" alt="${producto.nombre}" class= "imagen-producto">
+                        <p><b>${producto.nombre}</b></p>
+                        <p>Precio: ${producto.precio}</p>
+                    `;
+                    resultadosContainer.appendChild(div);
+                });
+            } else {
+                resultadosContainer.innerHTML = "<p>No se encontraron resultados.</p>";
+            }
+        });
+    </script>
+
+    <script>
+        // Cargar el header desde header.html
+        fetch("header.html")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error al cargar el header.");
+                }
+                return response.text();
+            })
+            .then(data => document.getElementById("header-container").innerHTML = data)
+            .catch(error => console.error("Error:", error));
+    </script>
+
+</body>
+</html>
