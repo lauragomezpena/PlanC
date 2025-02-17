@@ -23,7 +23,7 @@
             <button type="submit">Iniciar sesión</button>
 
             <div class="botones">
-                <button type="button">Limpiar Formulario</button>
+                <button type="button" id="limpiar">Limpiar Formulario</button>
                 <button type="button" onclick="window.location.href='register.html'">Register</button>
             </div>
         </form>
@@ -38,6 +38,11 @@
             .then(response => response.text())
             .then(data => document.getElementById("header-container").innerHTML = data)
             .catch(error => console.error("Error al cargar el header:", error));
+
+        document.getElementById("limpiar").addEventListener("click", function() {
+            document.getElementById("user").value = "";
+            document.getElementById("passwd").value = "";
+        });
     </script>
 
 </body>
