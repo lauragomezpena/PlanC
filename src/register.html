@@ -57,7 +57,8 @@
 
             <button type="submit">Registrar</button>
             <div class="botones">
-                <button type="reset">Limpiar Formulario</button>
+                <button type="button" id="limpiar">Limpiar Formulario</button>
+
                 <button type="button" onclick="window.location.href='login.html'">Inicio de Sesión</button>
             </div>
         </form>
@@ -134,6 +135,12 @@
                 emailError.style.display = "inline";
             }
         });
+
+        document.getElementById("limpiar").addEventListener("click", function() {
+            document.getElementById("user").value = "";
+            document.getElementById("passwd").value = "";
+        });
+
     </script>
 
 </body>
