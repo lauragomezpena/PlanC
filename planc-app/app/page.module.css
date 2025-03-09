@@ -1,0 +1,164 @@
+/* General */
+.container {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8;
+  color: #333;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+      "header"
+      "main"
+      "footer";
+  height: 100vh; /* Asegura que el body ocupe toda la pantalla */
+}
+
+/* HEADER */
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e8e8e8;
+  padding: 10px 20px;
+  height: auto;
+}
+
+/* Logo */
+.logo {
+  width: 80px;
+  height: auto;
+}
+
+/* Nav y botón */
+.nav {
+  margin-left: auto;
+}
+
+.navButton {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navButton:hover {
+  background-color: #0056b3;
+}
+
+/* MAIN */
+.main {
+  grid-area: main;
+  background: #ffffff;
+  width: 50%;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px auto;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formLabel {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 1rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.formInput:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+/* Botones del formulario */
+.formButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.formButton {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex: 1;
+}
+
+.formButtonCancel {
+  background-color: #87898b;
+  color: #fff;
+}
+
+.formButtonCancel:hover {
+  background-color: #5a6268;
+}
+
+.formButtonSubmit {
+  background-color: #668eba;
+  color: #fff;
+}
+
+.formButtonSubmit:hover {
+  background-color: #0056b3;
+}
+
+.formButton:active {
+  transform: scale(0.98);
+}
+
+/* FOOTER */
+.footer {
+  grid-area: footer;
+  text-align: center;
+  background-color: #f0f4f8;
+  padding: 10px;
+}
+
+.footerText {
+  color: #333;
+}
+
+.footerItalic {
+  color: #777;
+}
+
+/* Imágenes */
+.productImage {
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 10px auto;
+}
+
+.productImageDetail {
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
