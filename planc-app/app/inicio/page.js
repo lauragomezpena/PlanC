@@ -1,17 +1,14 @@
-"use client";
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { saveToken } from '../../utils/auth';
+'use client';
+import React, { useState } from 'react';
+import { saveToken } from '../../utils/auth'; // Importa la función saveToken
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import styles from '../page.module.css'
+import styles from '../page.module.css';
 
 export default function Login() {
   const [user, setUser] = useState('');
   const [passwd, setPasswd] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const handleUserChange = (e) => setUser(e.target.value);
   const handlePasswdChange = (e) => setPasswd(e.target.value);
@@ -35,8 +32,8 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        saveToken(data.token);
-        router.push('/');  // Redirigir a la página principal
+        saveToken(data.token);  // Guardamos el token en localStorage
+        window.location.href = '/';  // Redirige a la página principal
       } else {
         setError(data.detail || 'Error al iniciar sesión');
       }
@@ -73,7 +70,7 @@ export default function Login() {
 
           <div className={styles.formButtons}>
             <button type="reset" className={styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
-            <button type="button" className={styles.formButton} onClick={() => router.push('/registro')}>
+            <button type="button" className={styles.formButton} onClick={() => window.location.href = '/registro'}>
               Registrarse
             </button>
           </div>
