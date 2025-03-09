@@ -117,10 +117,8 @@ export default function Registro() {
   };
 
   return (
-    <div className={styles.container}>
-      <Header />
+    <>
 
-      <main className={styles.main}>
         <h1>Regístrate en Plan C</h1>
         <br />
         <h2>Si ya tienes cuenta, Inicia Sesión</h2>
@@ -268,9 +266,7 @@ export default function Registro() {
             </button>
           </div>
         </form>
-      </main>
 
-      <Footer />
-    </div>
+    </>
   );
 }

@@ -32,15 +32,12 @@ export default function ProductoDetalle() {
   }
 
   return (
-    <div className={styles.container}>
-      <Header />
-      <main className={styles.main}>
+    <>
       <h1>{producto.nombre}</h1>
       <Image src={producto.imagen} alt={producto.nombre} width={300} height={400} />
       <p>{producto.descripcion}</p>
       <p><b>Precio:</b> {producto.precio}€</p>
-      </main>
-       <Footer />
-    </div>
+
+    </>
   );
 }

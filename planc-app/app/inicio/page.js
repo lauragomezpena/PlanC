@@ -50,9 +50,8 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
-      <Header />
-      <main className={styles.main}>
+    <>
+
         <h1>Inicia sesión en tu cuenta</h1>
         <br />
         <h2>Si no tienes cuenta, <a href="/registro">Regístrate</a></h2>
@@ -75,9 +74,7 @@ export default function Login() {
             </button>
           </div>
         </form>
-      </main>
 
-      <Footer />
-    </div>
+    </>
   );
 }

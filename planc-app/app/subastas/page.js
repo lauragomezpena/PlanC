@@ -111,10 +111,7 @@ export default function ResultadosBusqueda() {
 
 
   return (
-    <div className={styles.container}>
-      <Header />
-
-      <main className={styles.main}>
+    <>
         <h1 className={styles.head1}>Resultados de búsqueda</h1>
 
         {/* Filtro de categoría */}
@@ -160,9 +157,7 @@ export default function ResultadosBusqueda() {
           </div>
         )}
 
-      </main>
 
-      <Footer />
-    </div>
+    </>
   );
 }
