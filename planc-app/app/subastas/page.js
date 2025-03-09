@@ -143,12 +143,10 @@ export default function ResultadosBusqueda() {
         ) : (
           <div id="resultados">
             {productosOrdenados.map((producto, index) => (
-              <div key={index} className="producto">
-                <a
-                  href={`producto.html?nombre=${encodeURIComponent(producto.nombre)}&precio=${encodeURIComponent(producto.precio)}&imagen=${encodeURIComponent(producto.imagen)}&descripcion=${encodeURIComponent(producto.descripcion)}`}
-                >
+              <div key={index} className="producto" onClick={() => router.push(`/detalle/${encodeURIComponent(producto.nombre)}`)}>
+
                   <Image
-                    src={producto.imagen}  // Usa la imagen importada
+                    src={producto.imagen} 
                     alt={producto.nombre}
                     className="imagen-producto"
                     height={150}
@@ -156,7 +154,7 @@ export default function ResultadosBusqueda() {
                   />
                   <p><b>{producto.nombre}</b></p>
                   <p>Precio: {producto.precio}€</p>
-                </a>
+     
               </div>
             ))}
           </div>
