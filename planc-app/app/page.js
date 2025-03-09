@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Search from "@/components/Search";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Search from "../components/Search";
 import styles from "./page.module.css";
 
 
