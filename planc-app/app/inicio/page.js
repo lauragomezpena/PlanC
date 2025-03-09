@@ -1,68 +1,86 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';  
-import Header from '../../components/Header';  
+import { useRouter } from 'next/navigation';
+import { saveToken } from '../../utils/auth';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styles from '../page.module.css'
 
 export default function Login() {
   const [user, setUser] = useState('');
   const [passwd, setPasswd] = useState('');
-  const router = useRouter();  
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  // Manejar cambios en los inputs
   const handleUserChange = (e) => setUser(e.target.value);
   const handlePasswdChange = (e) => setPasswd(e.target.value);
 
-  // Enviar formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de inicio de sesión (aquí solo redirigimos como ejemplo)
-    router.push('/dashboard');  // Redirigir a una página de usuario después de iniciar sesión
+    setError('');
+
+    try {
+      const response = await fetch('https://das-p2-backend.onrender.com/api/users/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: user,
+          password: passwd,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        saveToken(data.token);
+        router.push('/');  // Redirigir a la página principal
+      } else {
+        setError(data.detail || 'Error al iniciar sesión');
+      }
+    } catch (error) {
+      console.error('Error en login:', error);
+      setError('Error de conexión con el servidor');
+    }
   };
 
-  // Limpiar formulario
   const handleClear = () => {
     setUser('');
     setPasswd('');
+    setError('');
   };
 
   return (
     <div className={styles.container}>
-      <Header /> 
+      <Header />
       <main className={styles.main}>
         <h1>Inicia sesión en tu cuenta</h1>
-        <br/>
-        <h2>Si no tienes cuenta, Regístrate</h2>
+        <br />
+        <h2>Si no tienes cuenta, <a href="/registro">Regístrate</a></h2>
 
-        <form onSubmit={handleSubmit} className = {styles.form}>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
+        <form onSubmit={handleSubmit} className={styles.form}>
           <label htmlFor="user" className={styles.label}>Usuario</label>
-          <input
-            id="user"
-            type="text"
-            value={user}
-            onChange={handleUserChange}
-          />
+          <input id="user" type="text" value={user} onChange={handleUserChange} required />
 
           <label htmlFor="passwd" className={styles.label}>Contraseña</label>
-          <input
-            id="passwd"
-            type="password"
-            value={passwd}
-            onChange={handlePasswdChange}
-          />
+          <input id="passwd" type="password" value={passwd} onChange={handlePasswdChange} required />
 
-          <button type="submit" className ={styles.formButtonSubmit} >Iniciar sesión</button>
+          <button type="submit" className={styles.formButtonSubmit}>Iniciar sesión</button>
 
           <div className={styles.formButtons}>
-            <button type="reset" className = {styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
-            <button type="button" className = {styles.formButton} onClick={() => router.push('/registro')}>Register</button>
+            <button type="reset" className={styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
+            <button type="button" className={styles.formButton} onClick={() => router.push('/registro')}>
+              Registrarse
+            </button>
           </div>
         </form>
       </main>
 
-      <Footer /> 
+      <Footer />
     </div>
   );
 }

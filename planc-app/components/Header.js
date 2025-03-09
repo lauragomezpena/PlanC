@@ -1,28 +1,35 @@
-'use client';
+"use client";
 
-import styles from "./componentes.module.css";
-import Image from "next/image";  
-import myImage from "@/public/logo.jpg";
-import { useRouter } from 'next/navigation';  
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { getToken, removeToken, isAuthenticated } from '../utils/auth';
+import styles from './componentes.module.css'
 
 export default function Header() {
-  const router = useRouter();  
+  const router = useRouter();
+  const authenticated = isAuthenticated();
 
-  const handleLoginRedirect = () => {
-    router.push('/inicio');  
-  };
-
-  const handleLogoClick = () => {
-    router.push('/');  
+  const handleLogout = () => {
+    removeToken();
+    router.push('/');
   };
 
   return (
     <header className={styles.header}>
-      <Image alt="Logo" src={myImage} className={styles.logo} width={100} height={150}  onClick={handleLogoClick} />
-
-      <button type="button" onClick={handleLoginRedirect}>
-        Mi Cuenta
-      </button>
+      <h1>Plan C</h1>
+      <nav>
+        {authenticated ? (
+          <>
+            <Link href="/dashboard">Mi Cuenta</Link>
+            <button onClick={handleLogout} className={styles.logoutButton}>Cerrar sesión</button>
+          </>
+        ) : (
+          <>
+            <Link href="/login">Iniciar Sesión</Link>
+            <Link href="/registro">Registrarse</Link>
+          </>
+        )}
+      </nav>
     </header>
   );
 }
