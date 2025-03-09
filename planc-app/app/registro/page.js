@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';  
 import Footer from '../../components/Footer';
 import styles from '../page.module.css'; 
+import { useRouter } from 'next/navigation';
 
 export default function Registro() {
-  const [formData, setFormData] = useState({
+    const router = useRouter();  
+    const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
     dni: '',
@@ -26,7 +28,7 @@ export default function Registro() {
 
   // Cargar las comunidades y ciudades desde el JSON
   useEffect(() => {
-    fetch('/../public/ciudades.json')
+    fetch('/ciudades.json')
       .then(response => response.json())
       .then(data => setComunidades(data))
       .catch(error => console.error("Error cargando ciudades:", error));
@@ -69,7 +71,7 @@ export default function Registro() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <Header />
 
       <main className= {styles.main}>
@@ -195,7 +197,7 @@ export default function Registro() {
 
           <div className={styles.formButtons}>
             <button className= {styles.formButton} type="reset" id="limpiar">Limpiar Formulario</button>
-            <button className= {styles.formButton} type="button" onClick={() => window.location.href = 'login.html'}>
+            <button className= {styles.formButton} type="button"  onClick={() => router.push('/inicio')}>
               Inicio de Sesión
             </button>
           </div>

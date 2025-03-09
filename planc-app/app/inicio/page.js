@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';  // Si estás usando Next.js
+import { useRouter } from 'next/navigation';  
 import Header from '../../components/Header';  
 import Footer from '../../components/Footer';
 import styles from '../page.module.css'
@@ -9,7 +9,7 @@ import styles from '../page.module.css'
 export default function Login() {
   const [user, setUser] = useState('');
   const [passwd, setPasswd] = useState('');
-  const router = useRouter();  // Para redirigir a otras páginas
+  const router = useRouter();  
 
   // Manejar cambios en los inputs
   const handleUserChange = (e) => setUser(e.target.value);
@@ -29,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <Header /> 
       <main className={styles.main}>
         <h1>Inicia sesión en tu cuenta</h1>
@@ -63,6 +63,6 @@ export default function Login() {
       </main>
 
       <Footer /> 
-    </>
+    </div>
   );
 }

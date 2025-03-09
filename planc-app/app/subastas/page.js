@@ -4,7 +4,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styles from '../page.module.css';
 import Image from "next/image";
-import { useRouter } from 'next/navigation'; // Importar useRouter para la navegación
+import { useRouter } from 'next/navigation';
 
 // Importa las imágenes
 import img1984 from '../../imgs/1984.jpg';
@@ -111,7 +111,7 @@ export default function ResultadosBusqueda() {
 
 
   return (
-    <div>
+    <div className={styles.container}>
       <Header />
 
       <main className={styles.main}>

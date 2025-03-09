@@ -11,7 +11,7 @@
       "header"
       "main"
       "footer";
-  height: 100vh; /* Asegura que el body ocupe toda la pantalla */
+  height: 100vh; 
 }
 
 /* HEADER */
@@ -72,6 +72,7 @@ align-items: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  display: center;
 }
 
 .formLabel {
