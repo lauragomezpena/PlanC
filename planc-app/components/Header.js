@@ -30,7 +30,7 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Link className = {styles.navLink} href="/login">Iniciar Sesión</Link>
+            <Link className = {styles.navLink} href="/inicio">Iniciar Sesión</Link>
             
             <Link href="/registro">Registrarse</Link>
           </>
