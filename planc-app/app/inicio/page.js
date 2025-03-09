@@ -33,10 +33,11 @@ export default function Login() {
       <Header /> 
       <main className={styles.main}>
         <h1>Inicia sesión en tu cuenta</h1>
+        <br/>
         <h2>Si no tienes cuenta, Regístrate</h2>
 
         <form onSubmit={handleSubmit} className = {styles.form}>
-          <label htmlFor="user">Usuario</label>
+          <label htmlFor="user" className={styles.label}>Usuario</label>
           <input
             id="user"
             type="text"
@@ -44,7 +45,7 @@ export default function Login() {
             onChange={handleUserChange}
           />
 
-          <label htmlFor="passwd">Contraseña</label>
+          <label htmlFor="passwd" className={styles.label}>Contraseña</label>
           <input
             id="passwd"
             type="password"
@@ -52,9 +53,9 @@ export default function Login() {
             onChange={handlePasswdChange}
           />
 
-          <button type="submit" className ={styles.formButton} >Iniciar sesión</button>
+          <button type="submit" className ={styles.formButtonSubmit} >Iniciar sesión</button>
 
-          <div className="formButtons">
+          <div className={styles.formButtons}>
             <button type="reset" className = {styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
             <button type="button" className = {styles.formButton} onClick={() => router.push('/registro')}>Register</button>
           </div>

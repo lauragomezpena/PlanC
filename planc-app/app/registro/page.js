@@ -26,7 +26,7 @@ export default function Registro() {
 
   // Cargar las comunidades y ciudades desde el JSON
   useEffect(() => {
-    fetch('/../../other/ciudades.json')
+    fetch('/../public/ciudades.json')
       .then(response => response.json())
       .then(data => setComunidades(data))
       .catch(error => console.error("Error cargando ciudades:", error));

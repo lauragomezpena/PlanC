@@ -108,17 +108,14 @@ export default function ResultadosBusqueda() {
     setProductosOrdenados(productosOrdenados);
   }, [orden, productos, categoria]);  // Se actualiza cuando cambian productos, orden o categoría
 
-  // Función para volver a la página de inicio
-  const volver = () => {
-    router.push('/inicio');  // Redirige a la página de inicio
-  };
+
 
   return (
     <div>
       <Header />
 
-      <main>
-        <h1>Resultados de búsqueda</h1>
+      <main className={styles.main}>
+        <h1 className={styles.head1}>Resultados de búsqueda</h1>
 
         {/* Filtro de categoría */}
         <div className={styles.filtro}>
@@ -132,7 +129,7 @@ export default function ResultadosBusqueda() {
         </div>
 
         {/* Filtro de ordenamiento */}
-        <div className={styles.filtro}>
+        <div className={styles.filtro} >
           <label htmlFor="precio">Filtrar por precio:</label>
           <select id="precio" value={orden} onChange={(e) => setOrden(e.target.value)}>
             <option value="ascendente">Menor a mayor</option>
@@ -144,7 +141,7 @@ export default function ResultadosBusqueda() {
         {mensaje ? (
           <p>{mensaje}</p>
         ) : (
-          <div id="resultados" className="resultados-container">
+          <div id="resultados">
             {productosOrdenados.map((producto, index) => (
               <div key={index} className="producto">
                 <a
@@ -154,8 +151,8 @@ export default function ResultadosBusqueda() {
                     src={producto.imagen}  // Usa la imagen importada
                     alt={producto.nombre}
                     className="imagen-producto"
-                    height={100}
-                    width={100}
+                    height={150}
+                    width={110}
                   />
                   <p><b>{producto.nombre}</b></p>
                   <p>Precio: {producto.precio}€</p>
@@ -165,8 +162,6 @@ export default function ResultadosBusqueda() {
           </div>
         )}
 
-        {/* Botón de volver */}
-        <button onClick={volver}>Volver</button>
       </main>
 
       <Footer />

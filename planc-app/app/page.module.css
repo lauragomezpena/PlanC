@@ -25,6 +25,10 @@
   height: auto;
 }
 
+.head1{
+align-items: center;
+
+}
 /* Logo */
 .logo {
   width: 80px;
@@ -186,4 +190,9 @@
   display: block;
   text-align: left;
   margin-bottom: 5px;
+}
+
+.filtro {
+  margin: 10px 0;
+  align-items: center;
 }
