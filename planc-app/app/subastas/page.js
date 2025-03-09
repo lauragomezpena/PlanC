@@ -6,6 +6,14 @@ import styles from '../page.module.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation'; // Importar useRouter para la navegación
 
+// Importa las imágenes
+import img1984 from '../../imgs/1984.jpg';
+import imgHarryPotter from '../../imgs/harrypotter.jpg';
+import imgHp from '../../imgs/hp.jpg';
+import imgMacbookPro from '../../imgs/macbookpro.jpg';
+import imgMarioKart from '../../imgs/mariokart.jpg';
+import imgFifa25 from '../../imgs/fifa25.jpg';
+
 export default function ResultadosBusqueda() {
   const [productos, setProductos] = useState([]);
   const [productosOrdenados, setProductosOrdenados] = useState([]);
@@ -28,14 +36,14 @@ export default function ResultadosBusqueda() {
         { 
           nombre: "1984", 
           precio: 15,  
-          imagen: "1984.jpg", 
+          imagen: img1984, 
           descripcion: "Una novela distópica de George Orwell que explora un mundo totalitario donde el Gran Hermano lo controla todo.",
           categoria: "libros"
         },
         { 
           nombre: "Harry Potter: Complete edition", 
           precio: 60,  
-          imagen: "harrypotter.jpg", 
+          imagen: imgHarryPotter, 
           descripcion: "Edición completa de la saga Harry Potter, escrita por J.K. Rowling, que sigue la historia de un joven mago y sus aventuras en Hogwarts.",
           categoria: "libros"
         }
@@ -44,14 +52,14 @@ export default function ResultadosBusqueda() {
         { 
           nombre: "Laptop HP", 
           precio: 400,  
-          imagen: "hp.jpg", 
+          imagen: imgHp, 
           descripcion: "Portátil HP con procesador Intel Core i5, 8GB de RAM y 256GB SSD, ideal para trabajo y estudio.",
           categoria: "ordenadores"
         },
         { 
           nombre: "MacBook Pro", 
           precio: 700,  
-          imagen: "macbookpro.jpg", 
+          imagen: imgMacbookPro, 
           descripcion: "Potente MacBook Pro con chip M1, pantalla Retina y diseño ligero, perfecto para profesionales creativos.",
           categoria: "ordenadores"
         }
@@ -60,14 +68,14 @@ export default function ResultadosBusqueda() {
         { 
           nombre: "Mario Kart Deluxe", 
           precio: 60,  
-          imagen: "mariokart.jpg", 
+          imagen: imgMarioKart, 
           descripcion: "Divertido juego de carreras con personajes de Nintendo, ideal para jugar con amigos y familia.",
           categoria: "videojuegos"
         },
         { 
           nombre: "FIFA 25", 
           precio: 70,  
-          imagen: "fifa25.jpg", 
+          imagen: imgFifa25, 
           descripcion: "Última entrega de la saga FIFA, con gráficos mejorados y jugabilidad realista para los amantes del fútbol.",
           categoria: "videojuegos"
         }
@@ -143,7 +151,7 @@ export default function ResultadosBusqueda() {
                   href={`producto.html?nombre=${encodeURIComponent(producto.nombre)}&precio=${encodeURIComponent(producto.precio)}&imagen=${encodeURIComponent(producto.imagen)}&descripcion=${encodeURIComponent(producto.descripcion)}`}
                 >
                   <Image
-                    src={`/../../imgs/${producto.imagen}`}
+                    src={producto.imagen}  // Usa la imagen importada
                     alt={producto.nombre}
                     className="imagen-producto"
                     height={100}
