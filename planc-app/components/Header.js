@@ -25,7 +25,7 @@ export default function Header() {
       <nav className = {styles.navLink}>
         {authenticated ? (
           <>
-            <Link className = {styles.navLink} href="/dashboard">Mi Cuenta</Link>
+            <Link className = {styles.navLink} href="/informacion">Mi Cuenta</Link>
             <button onClick={handleLogout} className={styles.logoutButton}>Cerrar sesión</button>
           </>
         ) : (
