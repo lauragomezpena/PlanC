@@ -56,7 +56,7 @@ export default function Login() {
 
           <div className="formButtons">
             <button type="reset" className = {styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
-            <button type="button" className = {styles.formButton} onClick={() => router.push('/register')}>Register</button>
+            <button type="button" className = {styles.formButton} onClick={() => router.push('/registro')}>Register</button>
           </div>
         </form>
       </main>
