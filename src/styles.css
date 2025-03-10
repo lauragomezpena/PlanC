@@ -107,6 +107,7 @@ form button {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     flex: 1;
+    margin-right: 10px;
 }
 
 form button[type="button"] {
@@ -146,3 +147,18 @@ footer b {
 footer i {
     color: #777;
 }
+
+.imagen-producto {
+    width: 150px; 
+    height: auto;  
+    border-radius: 10px;
+    display: block; 
+    margin: 10px auto;
+}
+.imagen-producto-detalle {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+

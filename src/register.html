@@ -57,7 +57,8 @@
 
             <button type="submit">Registrar</button>
             <div class="botones">
-                <button type="reset">Limpiar Formulario</button>
+                <button type="reset" id="limpiar">Limpiar Formulario</button>
+
                 <button type="button" onclick="window.location.href='login.html'">Inicio de Sesión</button>
             </div>
         </form>
@@ -80,7 +81,7 @@
             const ciudadSelect = document.getElementById("ciudad");
 
             // Cargar el archivo ciudades.json
-            fetch("ciudades.json")
+            fetch("other/ciudades.json")
                 .then(response => response.json())
                 .then(data => {
                     // Llenar las comunidades
@@ -134,6 +135,12 @@
                 emailError.style.display = "inline";
             }
         });
+
+        document.getElementById("limpiar").addEventListener("click", function() {
+            document.getElementById("user").value = "";
+            document.getElementById("passwd").value = "";
+        });
+
     </script>
 
 </body>
