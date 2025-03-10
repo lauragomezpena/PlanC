@@ -4,7 +4,24 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../utils/auth';
-
+const comunidades = {
+  "Andalucía": ["Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla"],
+  "Aragón": ["Huesca", "Teruel", "Zaragoza"],
+  "Asturias": ["Oviedo", "Gijón", "Avilés"],
+  "Canarias": ["Las Palmas", "Santa Cruz de Tenerife"],
+  "Cantabria": ["Santander"],
+  "Castilla-La Mancha": ["Albacete", "Ciudad Real", "Cuenca", "Guadalajara", "Toledo"],
+  "Castilla y León": ["Ávila", "Burgos", "León", "Palencia", "Salamanca", "Segovia", "Soria", "Valladolid", "Zamora"],
+  "Cataluña": ["Barcelona", "Girona", "Lleida", "Tarragona"],
+  "Extremadura": ["Badajoz", "Cáceres"],
+  "Galicia": ["A Coruña", "Lugo", "Ourense", "Pontevedra"],
+  "Madrid": ["Madrid"],
+  "Murcia": ["Murcia"],
+  "Navarra": ["Pamplona"],
+  "La Rioja": ["Logroño"],
+  "País Vasco": ["Bilbao", "San Sebastián", "Vitoria"],
+  "Valencia": ["Alicante", "Castellón", "Valencia"]
+};
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +36,7 @@ const Register = () => {
     municipality: ''
   });
   
+  const [ciudades, setCiudades] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,6 +44,16 @@ const Register = () => {
   const router = useRouter();
   const { register } = useAuth();
 
+  const handleComunidadChange = (e) => {
+    const comunidadSeleccionada = e.target.value;
+    setFormData((prevState) => ({ 
+      ...prevState, 
+      locality: comunidadSeleccionada,
+      municipality: '' 
+    }));
+    setCiudades(comunidades[comunidadSeleccionada] || []);
+  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -127,13 +155,11 @@ const Register = () => {
   // Función para obtener nombre legible de los campos
   const getFieldDisplayName = (field) => {
     const fieldNames = {
-      first_name: 'Nombre',
-      last_name: 'Apellidos',
-      dni:"DNI",
       username: 'Nombre de usuario',
       email: 'Email',
       password: 'Contraseña',
-
+      first_name: 'Nombre',
+      last_name: 'Apellidos',
       birth_date: 'Fecha de nacimiento',
       locality: 'Localidad',
       municipality: 'Municipio'
@@ -176,9 +202,54 @@ const Register = () => {
         
         <form onSubmit={handleSubmit} className={styles.form}>
 
+              <label htmlFor="username" className={styles.label}>Nombre de usuario*</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                placeholder="Elige un nombre de usuario único"
+              />
 
+            
+              <label htmlFor="email" className={styles.label}>Email*</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="ejemplo@correo.com"
+              />
 
-              <label htmlFor="first_name" className={styles.label}>Nombre*</label>
+              <label htmlFor="password" className={styles.label}>Contraseña*</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder="Mínimo 8 caracteres, letras y números"
+              />
+
+            
+
+              <label htmlFor="confirmPassword" className={styles.label}>Confirmar contraseña*</label>
+              <input
+                type="password" 
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                placeholder="Repite la contraseña"
+              />
+
+              <label htmlFor="first_name" className={styles.label} >Nombre</label>
               <input
                 type="text"
                 id="first_name"
@@ -189,9 +260,8 @@ const Register = () => {
                 placeholder="Tu nombre"
               />
 
-            
-
-              <label htmlFor="last_name" className={styles.label}>Apellidos* </label>
+        
+              <label htmlFor="last_name" className={styles.label}>Apellidos</label>
               <input
                 type="text"
                 id="last_name"
@@ -199,92 +269,11 @@ const Register = () => {
                 value={formData.last_name}
                 onChange={handleChange}
                 required
-                className={styles.input}
                 placeholder="Tus apellidos"
               />
-              <label htmlFor="username">Nombre de usuario*</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Elige un nombre de usuario único"
-              />
-
-              <label htmlFor="dni">DNI*</label>
-              <input
-                type="text"
-                id="dni"
-                name="dni"
-                value={formData.dni}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Introduzca su dni"
-              />
-              
-              <label htmlFor="dni">DNI*</label>
-              <input
-                type="text"
-                id="dni"
-                name="dni"
-                value={formData.dni}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Introduzca su dni"
-              />
-
-              <label htmlFor="email">Email*</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="ejemplo@correo.com"
-              />
 
 
-          
-
-              <label htmlFor="password">Contraseña*</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Mínimo 8 caracteres, letras y números"
-              />
-
-            
-
-              <label htmlFor="confirmPassword">Confirmar contraseña*</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Repite la contraseña"
-              />
-
-
-          
-
-
-
-            <label htmlFor="birth_date">Fecha de nacimiento* (AAAA-MM-DD)</label>
+            <label htmlFor="birth_date" className={styles.label} >Fecha de nacimiento (AAAA-MM-DD)</label>
             <input
               type="date"
               id="birth_date"
@@ -292,41 +281,37 @@ const Register = () => {
               value={formData.birth_date}
               onChange={handleChange}
               required
-              className={styles.input}
             />
 
 
-              <label htmlFor="locality">Localidad*</label>
-              <input
-                type="text"
+              <label htmlFor="locality" className={styles.label}>Localidad</label>
+              <select
                 id="locality"
                 name="locality"
                 value={formData.locality}
-                onChange={handleChange}
+                onChange={handleComunidadChange}
                 required
-                className={styles.input}
-                placeholder="Tu localidad"
-              />
-+
-
-              <label htmlFor="municipality">Municipio*</label>
-              <input
-                type="text"
-                id="municipality"
-                name="municipality"
-                value={formData.municipality}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Tu municipio"
-              />
-
+              >           
+              <option value="">Selecciona una comunidad</option>
+              {Object.keys(comunidades).map((comunidad) => (
+                <option key={comunidad} value={comunidad}>
+                  {comunidad}
+                </option>
+              ))}
+            </select>
+              <label htmlFor="municipality" className={styles.label}>Municipio</label>
+              <select id="municipality" value={formData.municipality} onChange={handleChange} name="municipality" required>
+              <option value="">Selecciona una ciudad</option>
+              {ciudades.map((ciudad) => (
+                <option key={ciudad} value={ciudad}>{ciudad}</option>
+              ))}
+            </select>
 
 
 
           <button 
             type="submit" 
-            className={styles.registerButton} 
+            className={styles.formButtonSubmit} 
             disabled={loading}
           >
             {loading ? 'Registrando...' : 'Registrarse'}
