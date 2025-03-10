@@ -26,7 +26,6 @@ export default function UserProfileEditPage() {
   const { currentUser, getUserProfile, updateUserProfile } = useAuth();
   const router = useRouter();
 
-  // Cargar los datos del perfil del usuario al montar el componente
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!currentUser) {
@@ -138,9 +137,9 @@ export default function UserProfileEditPage() {
     } catch (err) {
       console.error('Error al actualizar perfil:', err);
       
-      // Comprobar si el error contiene información detallada de validación
+
       if (err.validationErrors) {
-        // Mostrar los errores específicos de la API en un formato más amigable
+
         const errorMessages = [];
         
         Object.entries(err.validationErrors).forEach(([field, messages]) => {
@@ -157,7 +156,7 @@ export default function UserProfileEditPage() {
         
         setError(errorMessages.join('\n'));
       } else if (err.message && err.message.includes('{')) {
-        // Intentar extraer y formatear JSON incluido en el mensaje de error
+
         try {
           const jsonStart = err.message.indexOf('{');
           const jsonEnd = err.message.lastIndexOf('}') + 1;
@@ -179,7 +178,7 @@ export default function UserProfileEditPage() {
           
           setError(errorMessages.join('\n'));
         } catch (e) {
-          // Si falla el parseo, mostrar mensaje original
+
           setError(formatErrorMessage(err.message));
         }
       } else {
@@ -190,7 +189,7 @@ export default function UserProfileEditPage() {
     }
   };
   
-  // Función para obtener nombre legible de los campos
+
   const getFieldDisplayName = (field) => {
     const fieldNames = {
       username: 'Nombre de usuario',
@@ -205,10 +204,9 @@ export default function UserProfileEditPage() {
     
     return fieldNames[field] || field;
   };
-  
-  // Función para formatear mensajes de error
+
   const formatErrorMessage = (message) => {
-    // Traducción de mensajes comunes de error
+
     const translations = {
       'A user with that username already exists.': 'Este nombre de usuario ya está en uso.',
       'This password is too common.': 'Esta contraseña es demasiado común.',
@@ -222,7 +220,6 @@ export default function UserProfileEditPage() {
     return translations[message] || message;
   };
 
-  // Si está cargando, mostrar un mensaje
   if (loading) {
     return <div className={styles.loading}>Cargando información del perfil...</div>;
   }
