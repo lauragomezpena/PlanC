@@ -1,10 +1,10 @@
 'use client';
-
+import styles from "../../app/page.module.css";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../utils/auth';
-import styles from "../../app/page.module.css";
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -127,11 +127,13 @@ const Register = () => {
   // Función para obtener nombre legible de los campos
   const getFieldDisplayName = (field) => {
     const fieldNames = {
+      first_name: 'Nombre',
+      last_name: 'Apellidos',
+      dni:"DNI",
       username: 'Nombre de usuario',
       email: 'Email',
       password: 'Contraseña',
-      first_name: 'Nombre',
-      last_name: 'Apellidos',
+
       birth_date: 'Fecha de nacimiento',
       locality: 'Localidad',
       municipality: 'Municipio'
@@ -156,9 +158,12 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.registerContainer}>
-      <div className={styles.registerBox}>
-        <h2 className={styles.title}>Registro de usuario</h2>
+    <div>
+      
+      <h1>Regístrate en Plan C</h1>
+        <br />
+      <h2>Si ya tienes cuenta, Inicia Sesión</h2>
+
         
         {error && (
           <div className={styles.error}>
@@ -170,8 +175,33 @@ const Register = () => {
         {success && <div className={styles.success}>{success}</div>}
         
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
+
+
+
+              <label htmlFor="first_name" className={styles.label}>Nombre*</label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                required
+                placeholder="Tu nombre"
+              />
+
+            
+
+              <label htmlFor="last_name" className={styles.label}>Apellidos* </label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+                className={styles.input}
+                placeholder="Tus apellidos"
+              />
               <label htmlFor="username">Nombre de usuario*</label>
               <input
                 type="text"
@@ -183,9 +213,31 @@ const Register = () => {
                 className={styles.input}
                 placeholder="Elige un nombre de usuario único"
               />
-            </div>
-            
-            <div className={styles.formGroup}>
+
+              <label htmlFor="dni">DNI*</label>
+              <input
+                type="text"
+                id="dni"
+                name="dni"
+                value={formData.dni}
+                onChange={handleChange}
+                required
+                className={styles.input}
+                placeholder="Introduzca su dni"
+              />
+              
+              <label htmlFor="dni">DNI*</label>
+              <input
+                type="text"
+                id="dni"
+                name="dni"
+                value={formData.dni}
+                onChange={handleChange}
+                required
+                className={styles.input}
+                placeholder="Introduzca su dni"
+              />
+
               <label htmlFor="email">Email*</label>
               <input
                 type="email"
@@ -197,11 +249,10 @@ const Register = () => {
                 className={styles.input}
                 placeholder="ejemplo@correo.com"
               />
-            </div>
-          </div>
+
+
           
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
+
               <label htmlFor="password">Contraseña*</label>
               <input
                 type="password"
@@ -213,9 +264,9 @@ const Register = () => {
                 className={styles.input}
                 placeholder="Mínimo 8 caracteres, letras y números"
               />
-            </div>
+
             
-            <div className={styles.formGroup}>
+
               <label htmlFor="confirmPassword">Confirmar contraseña*</label>
               <input
                 type="password"
@@ -227,40 +278,12 @@ const Register = () => {
                 className={styles.input}
                 placeholder="Repite la contraseña"
               />
-            </div>
-          </div>
+
+
           
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="first_name">Nombre*</label>
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Tu nombre"
-              />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="last_name">Apellidos*</label>
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                required
-                className={styles.input}
-                placeholder="Tus apellidos"
-              />
-            </div>
-          </div>
-          
-          <div className={styles.formGroup}>
+
+
+
             <label htmlFor="birth_date">Fecha de nacimiento* (AAAA-MM-DD)</label>
             <input
               type="date"
@@ -271,10 +294,8 @@ const Register = () => {
               required
               className={styles.input}
             />
-          </div>
-          
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
+
+
               <label htmlFor="locality">Localidad*</label>
               <input
                 type="text"
@@ -286,9 +307,8 @@ const Register = () => {
                 className={styles.input}
                 placeholder="Tu localidad"
               />
-            </div>
-            
-            <div className={styles.formGroup}>
++
+
               <label htmlFor="municipality">Municipio*</label>
               <input
                 type="text"
@@ -300,20 +320,10 @@ const Register = () => {
                 className={styles.input}
                 placeholder="Tu municipio"
               />
-            </div>
-          </div>
-          
-          <div className={styles.termsContainer}>
-            <label className={styles.termsLabel}>
-              <input 
-                type="checkbox" 
-                required
-                className={styles.checkbox} 
-              />
-              <span>He leído y acepto los <a href="/terminos" target="_blank" rel="noopener noreferrer">términos y condiciones</a> y la <a href="/privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</span>
-            </label>
-          </div>
-          
+
+
+
+
           <button 
             type="submit" 
             className={styles.registerButton} 
@@ -327,7 +337,6 @@ const Register = () => {
           ¿Ya tienes cuenta? <Link href="/inicio">Inicia sesión aquí</Link>
         </div>
       </div>
-    </div>
   );
 };
 

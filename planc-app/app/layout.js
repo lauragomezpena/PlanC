@@ -3,15 +3,16 @@
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import styles from "./page.module.css";
 import { AuthProvider } from '../utils/auth';
 
 export default function RootLayout({ children }) {
   return (
     <AuthProvider>
       <html lang="es">
-        <body>
+        <body className={styles.container}>
           <Header />
-          <main>{children}</main>
+          <main className={styles.main}>{children}</main>
           <Footer />
         </body>
       </html>

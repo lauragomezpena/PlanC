@@ -1,9 +1,7 @@
 'use client';
-
+import styles from "../../app/page.module.css";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import styles from "../../app/page.module.css";
 import { useAuth } from '../../utils/auth';
 
 export default function LoginPage() {
@@ -14,6 +12,12 @@ export default function LoginPage() {
   
   const router = useRouter();
   const { login } = useAuth();
+
+  const handleClear = () => {
+    setUser('');
+    setPasswd('');
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +35,7 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Error durante login:', error);
       
-      // Comprobamos si hay errores de validación para mostrarlos de forma amigable
+  
       if (error.validationErrors) {
         const errorMessages = [];
         
@@ -60,7 +64,7 @@ export default function LoginPage() {
     }
   };
   
-  // Función para obtener nombre legible de los campos
+
   const getFieldDisplayName = (field) => {
     const fieldNames = {
       username: 'Nombre de usuario',
@@ -73,9 +77,8 @@ export default function LoginPage() {
     return fieldNames[field] || field;
   };
   
-  // Función para formatear mensajes de error
+
   const formatErrorMessage = (message) => {
-    // Traducción de mensajes comunes de error
     const translations = {
       'A user with that username already exists.': 'Este nombre de usuario ya está en uso.',
       'This password is too common.': 'Esta contraseña es demasiado común.',
@@ -88,9 +91,11 @@ export default function LoginPage() {
   };
 
   return (
-    <main className={styles.loginMain}>
-      <div className={styles.loginContainer}>
-        <h1>Iniciar Sesión</h1>
+
+      <div>
+        <h1>Inicia sesión en tu cuenta</h1>
+        <br />
+        <h2>Si no tienes cuenta, <a href="/registro">Regístrate</a></h2>
         
         {error && (
           <div className={styles.error}>
@@ -100,15 +105,16 @@ export default function LoginPage() {
           </div>
         )}
         
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+        <label htmlFor="user" className={styles.label}>Usuario</label>
           <input
             type="text"
-            placeholder="Nombre de usuario"
             className={styles.loginFormInput}
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+          <label htmlFor="passwd" className={styles.label}>Contraseña</label>
           <input
             type="password"
             placeholder="Contraseña"
@@ -119,18 +125,23 @@ export default function LoginPage() {
           />
           <button 
             type="submit" 
-            className={styles.loginFormSubmit}
+            className={styles.formButtonSubmit}
             disabled={loading}
           >
-            {loading ? 'Procesando...' : 'Ingresar'}
+            {loading ? 'Procesando...' : 'Iniciar sesión'}
           </button>
+          
+          <div className={styles.formButtons}>
+            <button type="reset" className={styles.formButton} onClick={handleClear}>Limpiar Formulario</button>
+            <button type="button" className={styles.formButton} onClick={() => window.location.href = '/registro'}>
+              Registrarse
+            </button>
+          </div>
         </form>
         
-        <div className={styles.loginLinks}>
-          <Link href="/registro" className={styles.loginLinksLink}>Crear cuenta nueva</Link>
-        </div>
+
         
       </div>
-    </main>
+
   );
 }
