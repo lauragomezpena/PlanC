@@ -42,7 +42,7 @@ export default function Header() {
             <button  onClick={handleCuenta} className={styles.formButton}>
             Mi Cuenta
             </button>
-            <a/>
+            
             <button onClick={handleLogout} className={styles.formButton}>
               Cerrar sesión
             </button>
