@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "e3a648bd-8c37-40be-9317-13002d2bb186",
+		"name": "DAS p2 - backend students",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10725647"
+	},
+	"item": [
+		{
+			"name": "profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+						  "key": "token",
+						  "value": "{{ACCESS_TOKEN}}",
+						  "type": "string"
+						}
+					  ]
+									},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://das-p2-backend.onrender.com/api/users/profile/",
+					"protocol": "https",
+					"host": [
+						"das-p2-backend",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"profile",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"securepassword\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+					
+				},
+				"url": {
+					"raw": "https://das-p2-backend.onrender.com/api/users/login/",
+					"protocol": "https",
+					"host": [
+						"das-p2-backend",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testuser\",\r\n    \"email\": \"test@example.com\",\r\n    \"password\": \"securepassword\",\r\n    \"first_name\": \"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"birth_date\": \"2000-01-01\",\r\n    \"locality\": \"Centro\",\r\n    \"municipality\": \"Madrid\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://das-p2-backend.onrender.com/api/users/register/",
+					"protocol": "https",
+					"host": [
+						"das-p2-backend",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
