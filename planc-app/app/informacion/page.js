@@ -40,13 +40,12 @@ export default function UserProfileEditPage() {
         
         const profile = await getUserProfile();
         
-        // Formatear la fecha para el input de tipo date
         let formattedDate = '';
         if (profile.birth_date) {
           formattedDate = new Date(profile.birth_date).toISOString().split('T')[0];
         }
         
-        // Rellenar el formulario con los datos del perfil
+
         setFormData({
           username: profile.username || '',
           email: profile.email || '',
@@ -62,7 +61,6 @@ export default function UserProfileEditPage() {
         console.error('Error al cargar perfil:', err);
         setError('Error al cargar el perfil. Por favor, inténtalo de nuevo más tarde.');
         
-        // Si la sesión expiró, redirigir al login
         if (err.message.includes('Sesión expirada')) {
           router.push('/inicio');
         }
@@ -83,8 +81,8 @@ export default function UserProfileEditPage() {
   };
 
   const validatePassword = (password) => {
-    if (!password) return true; // Si no hay contraseña, no validamos (no se va a actualizar)
-    // Al menos 8 caracteres y contener letras y números
+    if (!password) return true;
+
     const regEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     return regEx.test(password);
   };
@@ -105,16 +103,14 @@ export default function UserProfileEditPage() {
       }
     }
     
-    // Preparar datos para actualización
+
     const updateData = {...formData};
     delete updateData.confirmPassword;
-    
-    // Si no hay nueva contraseña, no enviarla
+
     if (!updateData.password) {
       delete updateData.password;
     }
-    
-    // Asegurarnos que birth_date tiene el formato correcto
+
     if (updateData.birth_date) {
       const date = new Date(updateData.birth_date);
       if (isNaN(date.getTime())) {
@@ -246,24 +242,22 @@ export default function UserProfileEditPage() {
         {success && <div className={styles.success}>{success}</div>}
         
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="username">Nombre de usuario*</label>
+
+              <label htmlFor="username" className={styles.label} >Nombre de usuario</label>
               <input
                 type="text"
                 id="username"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                disabled // El nombre de usuario no se puede modificar
+                disabled 
                 className={styles.input}
                 title="El nombre de usuario no se puede cambiar"
               />
               <small>El nombre de usuario no se puede modificar</small>
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email*</label>
+  
+        
+              <label htmlFor="email" className={styles.label} > Email</label>
               <input
                 type="email"
                 id="email"
@@ -273,12 +267,9 @@ export default function UserProfileEditPage() {
                 required
                 className={styles.input}
               />
-            </div>
-          </div>
           
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="password">Nueva contraseña</label>
+
+              <label htmlFor="password" className={styles.label}>Nueva contraseña</label>
               <input
                 type="password"
                 id="password"
@@ -288,10 +279,10 @@ export default function UserProfileEditPage() {
                 className={styles.input}
                 placeholder="Dejar en blanco para no cambiarla"
               />
-            </div>
+
             
-            <div className={styles.formGroup}>
-              <label htmlFor="confirmPassword">Confirmar contraseña</label>
+
+              <label htmlFor="confirmPassword" className={styles.label} >Confirmar contraseña</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -301,12 +292,8 @@ export default function UserProfileEditPage() {
                 className={styles.input}
                 placeholder="Confirme la nueva contraseña"
               />
-            </div>
-          </div>
-          
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="first_name">Nombre*</label>
+
+              <label htmlFor="first_name" className={styles.label}>Nombre</label>
               <input
                 type="text"
                 id="first_name"
@@ -316,10 +303,8 @@ export default function UserProfileEditPage() {
                 required
                 className={styles.input}
               />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="last_name">Apellidos*</label>
+
+              <label htmlFor="last_name" className={styles.label}>Apellidos</label>
               <input
                 type="text"
                 id="last_name"
@@ -329,11 +314,9 @@ export default function UserProfileEditPage() {
                 required
                 className={styles.input}
               />
-            </div>
-          </div>
-          
-          <div className={styles.formGroup}>
-            <label htmlFor="birth_date">Fecha de nacimiento*</label>
+
+      
+            <label htmlFor="birth_date" className={styles.label}>Fecha de nacimiento</label>
             <input
               type="date"
               id="birth_date"
@@ -343,11 +326,9 @@ export default function UserProfileEditPage() {
               required
               className={styles.input}
             />
-          </div>
+
           
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="locality">Localidad*</label>
+              <label htmlFor="locality" className={styles.label}>Localidad</label>
               <input
                 type="text"
                 id="locality"
@@ -357,10 +338,8 @@ export default function UserProfileEditPage() {
                 required
                 className={styles.input}
               />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="municipality">Municipio*</label>
+
+              <label htmlFor="municipality" className={styles.label}>Municipio</label>
               <input
                 type="text"
                 id="municipality"
@@ -370,10 +349,7 @@ export default function UserProfileEditPage() {
                 required
                 className={styles.input}
               />
-            </div>
-          </div>
-          
-          <div className={styles.buttonGroup}>
+
             <button
               type="button"
               onClick={() => router.push('/profile')}
@@ -389,7 +365,7 @@ export default function UserProfileEditPage() {
             >
               {updating ? 'Actualizando...' : 'Guardar cambios'}
             </button>
-          </div>
+
         </form>
       </div>
     </div>

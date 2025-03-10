@@ -22,6 +22,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
+      <Link href="/" passHref>
       <Image
         alt="Logo"
         src={myImage}
@@ -30,6 +31,7 @@ export default function Header() {
         height={150}
         onClick={handleLogoClick}
       />
+      </Link>
       <nav className={styles.navLink}>
         {currentUser ? (
           <>
