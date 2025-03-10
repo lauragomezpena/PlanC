@@ -1,192 +1,154 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import styles from '../page.module.css';
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import styles from "../page.module.css";
+
+// Función para registrar usuario
+const registerUser = async (userData) => {
+  try {
+    const response = await fetch("https://das-p2-backend.onrender.com/api/users/register/", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error('Error: ${response.status} - ${errorData}');
+    }
+
+    const createdUser = await response.json();
+    console.log(createdUser);
+
+    return createdUser;
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    return null;
+  }
+};
 
 export default function Registro() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    dni: '',
-    direccion: '',
-    comunidad: '',
-    ciudad: '',
-    email: '',
-    usuario: '',
-    passwd: '',
-    repeatPasswd: '',
-    imagen: null,
-  });
 
-  const [comunidades, setComunidades] = useState({});
-  const [ciudades, setCiudades] = useState([]);
-  const [mensajeError, setMensajeError] = useState('');
-  const [mensajeExito, setMensajeExito] = useState('');
-
-  useEffect(() => {
-    fetch('/ciudades.json')
-      .then((response) => response.json())
-      .then((data) => setComunidades(data))
-      .catch((error) => console.error('Error cargando ciudades:', error));
-  }, []);
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, [id]: value }));
+  // Datos de comunidades (puedes ampliarlos según necesites)
+  const comunidadesData = {
+    "Madrid": ["Madrid", "Alcalá de Henares", "Leganés", "Getafe"],
+    "Cataluña": ["Barcelona", "Girona", "Tarragona", "Lleida"],
+    "Andalucía": ["Sevilla", "Málaga", "Granada", "Córdoba"],
+    // ... puedes agregar más comunidades aquí
   };
 
-  const handleFileChange = (e) => {
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, imagen: e.target.files[0] }));
+  const [formData, setFormData] = useState({
+    usuario: "",
+    nombre: "",
+    apellido: "",
+    dni: "",
+    direccion: "",
+    comunidad: "",
+    ciudad: "",
+    email: "",
+    passwd: "",
+    repeatPasswd: "",
+    imagen: null,
+  });
+  const [provincias, setProvincias] = useState([]);
+  const [mensajeError, setMensajeError] = useState("");
+  const [mensajeExito, setMensajeExito] = useState("");
+
+  const handleChange = (e) => {
+    setMensajeError("");
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleComunidadChange = (e) => {
-    const comunidadSeleccionada = e.target.value;
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, comunidad: comunidadSeleccionada }));
-    setCiudades(comunidades[comunidadSeleccionada] || []);
+    setMensajeError("");
+    const selectedCommunity = e.target.value;
+    setFormData({ ...formData, comunidad: selectedCommunity, ciudad: "" });
+    setProvincias(comunidadesData[selectedCommunity] || []);
+  };
+
+  const handleFileChange = (e) => {
+    setMensajeError("");
+    setFormData({ ...formData, imagen: e.target.files[0] });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      usuario: "",
+      nombre: "",
+      apellido: "",
+      dni: "",
+      direccion: "",
+      comunidad: "",
+      ciudad: "",
+      email: "",
+      passwd: "",
+      repeatPasswd: "",
+      imagen: null,
+    });
+    setProvincias([]);
+    document.getElementById("UserForm").reset();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.passwd !== formData.repeatPasswd) {
-      setMensajeError('Las contraseñas no coinciden');
-      return;
-    }
-
-    const requiredFields = [
-      'nombre',
-      'apellido',
-      'dni',
-      'direccion',
-      'comunidad',
-      'ciudad',
-      'email',
-      'usuario',
-      'passwd',
-      'repeatPasswd',
-    ];
-
-    for (const field of requiredFields) {
-      if (!formData[field]) {
-        setMensajeError(`El campo ${field} es obligatorio`);
-        return;
-      }
-    }
-
-    const payload = {
-      username: formData.usuario,
+    const requestData = {
+      username: formData.user,
       email: formData.email,
-      password: formData.passwd,
-      first_name: formData.nombre,
-      last_name: formData.apellido,
-      locality: formData.ciudad,
-      municipality: formData.comunidad,
+      password: formData.password,
+      first_name: formData.name,
+      last_name: formData.lastname,
+      birth_date: formData.birthdate,
+      locality: formData.adress,
+      municipality: formData.provincia,
     };
 
-    try {
-      const response = await fetch('https://das-p2-backend.onrender.com/api/users/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Este usuario ya existe. ¿Quieres iniciar sesión?');
-      }
-
-      setMensajeExito('Registro exitoso, redirigiendo...');
-      setTimeout(() => router.push('/inicio'), 2000);
-    } catch (error) {
-      setMensajeError(error.message);
-    }
+    await registerUser(requestData);
+    resetForm();
   };
 
+
   return (
-    <div className={styles.container}>
-      <Header />
-      <main className={styles.main}>
-        <h1>Regístrate en Plan C</h1>
-        <h2>Si ya tienes cuenta, Inicia Sesión</h2>
-        <form onSubmit={handleSubmit} id="registro" className={styles.form}>
-          <label htmlFor="nombre" className={styles.label}>Nombre</label>
-          <input id="nombre" type="text" value={formData.nombre} onChange={handleChange} required />
+<>       <h2>Crear usuario</h2>
+        <form id="UserForm" onSubmit={handleSubmit} className={styles.form}>
+          <input type="text" name="usuario" placeholder="Usuario" onChange={handleChange} required />
+          <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
+          <input type="text" name="apellido" placeholder="Apellidos" onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleChange} required />
+          <input type="text" name="dni" placeholder="DNI" onChange={handleChange} required />
+          <input type="text" name="direccion" placeholder="Dirección" onChange={handleChange} required />
 
-          <label htmlFor="apellido" className={styles.label}>Apellido</label>
-          <input id="apellido" type="text" value={formData.apellido} onChange={handleChange} required />
-
-          <label htmlFor="dni" className={styles.label}>DNI</label>
-          <input id="dni" type="text" value={formData.dni} onChange={handleChange} required />
-
-          <label htmlFor="direccion" className={styles.label}>Dirección</label>
-          <input id="direccion" type="text" value={formData.direccion} onChange={handleChange} required />
-
-          <label htmlFor="comunidad" className={styles.label}>Comunidad</label>
-          <select id="comunidad" value={formData.comunidad} onChange={handleComunidadChange} required>
+          <select name="comunidad" onChange={handleComunidadChange} required>
             <option value="">Selecciona una comunidad</option>
-            {Object.keys(comunidades).map((comunidad) => (
-              <option key={comunidad} value={comunidad}>
+            {Object.keys(comunidadesData).map((comunidad, index) => (
+              <option key={index} value={comunidad}>
                 {comunidad}
               </option>
             ))}
           </select>
 
-          <label htmlFor="ciudad" className={styles.label}>Ciudad</label>
-          <select id="ciudad" value={formData.ciudad} onChange={handleChange} required>
+          <select name="ciudad" onChange={handleChange} required>
             <option value="">Selecciona una ciudad</option>
-            {ciudades.map((ciudad) => (
-              <option key={ciudad} value={ciudad}>
-                {ciudad}
+            {provincias.map((provincia, index) => (
+              <option key={index} value={provincia}>
+                {provincia}
               </option>
             ))}
           </select>
 
-          <label htmlFor="email" className={styles.label}>Correo Electrónico</label>
-          <input id="email" type="email" value={formData.email} onChange={handleChange} required />
+          <input type="password" name="passwd" placeholder="Contraseña" onChange={handleChange} required />
+          <input type="password" name="repeatPasswd" placeholder="Repetir Contraseña" onChange={handleChange} required />
+          <input type="file" name="imagen" onChange={handleFileChange} />
 
-          <label htmlFor="usuario" className={styles.label}>Usuario</label>
-          <input id="usuario" type="text" value={formData.usuario} onChange={handleChange} required />
-
-          <label htmlFor="passwd" className={styles.label}>Contraseña</label>
-          <input id="passwd" type="password" value={formData.passwd} onChange={handleChange} required />
-
-          <label htmlFor="repeatPasswd" className={styles.label}>Repetir contraseña</label>
-          <input id="repeatPasswd" type="password" value={formData.repeatPasswd} onChange={handleChange} required />
-
-          <label htmlFor="imagen" className={styles.label}>Imagen</label>
-          <input id="imagen" type="file" onChange={handleFileChange} />
-
-          {mensajeError && <p style={{ color: 'red' }}>{mensajeError}</p>}
-          {mensajeExito && <p style={{ color: 'green' }}>{mensajeExito}</p>}
-
-          <button className={styles.formButtonSubmit} type="submit">
-            Registrar
-          </button>
-
-          <div className={styles.formButtons}>
-            <button className={styles.formButton} type="reset">
-              Limpiar Formulario
-            </button>
-            <button
-              className={styles.formButton}
-              type="button"
-              onClick={() => router.push('/inicio')}
-            >
-              Inicio de Sesión
-            </button>
-          </div>
+          <button type="submit">Crear Usuario</button>
+          <button type="button" onClick={resetForm}>Limpiar formulario</button>
         </form>
-      </main>
-      <Footer />
-    </div>
+        {mensajeError && <p style={{ color: "red" }}>{mensajeError}</p>}
+        {mensajeExito && <p style={{ color: "green" }}>{mensajeExito}</p>}
+        <a href="/inicio">Volver a inicio sesión</a>
+    </>
   );
 }
