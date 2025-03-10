@@ -1,285 +1,397 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import styles from '../page.module.css';
+import { useAuth } from '../../utils/auth';
+import styles from "../../app/page.module.css";
 
-export default function EditarCuenta() {
-  const router = useRouter();
+export default function UserProfileEditPage() {
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    dni: '',
-    direccion: '',
-    comunidad: '',
-    ciudad: '',
+    username: '',
     email: '',
-    usuario: '',
-    passwd: '',
-    repeatPasswd: '',
-    imagen: null,
+    password: '',
+    confirmPassword: '',
+    first_name: '',
+    last_name: '',
+    birth_date: '',
+    locality: '',
+    municipality: ''
   });
+  
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  
+  const { currentUser, getUserProfile, updateUserProfile } = useAuth();
+  const router = useRouter();
 
-  const [comunidades, setComunidades] = useState({});
-  const [ciudades, setCiudades] = useState([]);
-  const [mensajeError, setMensajeError] = useState('');
-  const [mensajeExito, setMensajeExito] = useState('');
-  const [usuarioData, setUsuarioData] = useState(null);
-
+  // Cargar los datos del perfil del usuario al montar el componente
   useEffect(() => {
-    fetch('/ciudades.json')
-      .then((response) => response.json())
-      .then((data) => setComunidades(data))
-      .catch((error) => console.error('Error cargando ciudades:', error));
+    const fetchUserProfile = async () => {
+      if (!currentUser) {
+        router.push('/inicio');
+        return;
+      }
 
-    // Cargar los datos del usuario cuando el componente se monta
-    const cargarDatosUsuario = async () => {
       try {
-        const response = await fetch('https://das-p2-backend.onrender.com/api/users/me', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Suponiendo que se guarda el token en localStorage
-          },
-        });
-        const data = await response.json();
-        setUsuarioData(data);
+        setLoading(true);
+        setError('');
+        
+        const profile = await getUserProfile();
+        
+        // Formatear la fecha para el input de tipo date
+        let formattedDate = '';
+        if (profile.birth_date) {
+          formattedDate = new Date(profile.birth_date).toISOString().split('T')[0];
+        }
+        
+        // Rellenar el formulario con los datos del perfil
         setFormData({
-          nombre: data.first_name,
-          apellido: data.last_name,
-          dni: data.dni,
-          direccion: data.address,
-          comunidad: data.municipality,
-          ciudad: data.locality,
-          email: data.email,
-          usuario: data.username,
-          passwd: '',
-          repeatPasswd: '',
-          imagen: null, // Aquí podrías cargar la imagen si existe
+          username: profile.username || '',
+          email: profile.email || '',
+          password: '',
+          confirmPassword: '',
+          first_name: profile.first_name || '',
+          last_name: profile.last_name || '',
+          birth_date: formattedDate,
+          locality: profile.locality || '',
+          municipality: profile.municipality || ''
         });
-      } catch (error) {
-        console.error('Error al cargar los datos del usuario:', error);
+      } catch (err) {
+        console.error('Error al cargar perfil:', err);
+        setError('Error al cargar el perfil. Por favor, inténtalo de nuevo más tarde.');
+        
+        // Si la sesión expiró, redirigir al login
+        if (err.message.includes('Sesión expirada')) {
+          router.push('/inicio');
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
-    cargarDatosUsuario();
-  }, []);
+    fetchUserProfile();
+  }, [currentUser, getUserProfile, router]);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    // Limpiar el mensaje de error al cambiar cualquier campo
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, [id]: value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleFileChange = (e) => {
-    // Limpiar el mensaje de error al cambiar el archivo de imagen
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, imagen: e.target.files[0] }));
-  };
-
-  const handleComunidadChange = (e) => {
-    const comunidadSeleccionada = e.target.value;
-    // Limpiar el mensaje de error al cambiar la comunidad
-    setMensajeError('');
-    setFormData((prevState) => ({ ...prevState, comunidad: comunidadSeleccionada }));
-    setCiudades(comunidades[comunidadSeleccionada] || []);
+  const validatePassword = (password) => {
+    if (!password) return true; // Si no hay contraseña, no validamos (no se va a actualizar)
+    // Al menos 8 caracteres y contener letras y números
+    const regEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regEx.test(password);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validaciones de contraseña
-    if (formData.passwd && formData.passwd !== formData.repeatPasswd) {
-      setMensajeError('Las contraseñas no coinciden');
-      return;
-    }
-
-    // Validación de campos vacíos
-    const requiredFields = [
-      'nombre',
-      'apellido',
-      'dni',
-      'direccion',
-      'comunidad',
-      'ciudad',
-      'email',
-      'usuario',
-    ];
-
-    for (const field of requiredFields) {
-      if (!formData[field]) {
-        setMensajeError(`El campo ${field} es obligatorio`);
+    
+    // Validaciones
+    if (formData.password) {
+      if (formData.password !== formData.confirmPassword) {
+        setError('Las contraseñas no coinciden');
+        return;
+      }
+      
+      if (!validatePassword(formData.password)) {
+        setError('La contraseña debe tener al menos 8 caracteres y contener letras y números');
         return;
       }
     }
-
-    const payload = {
-      username: formData.usuario,
-      email: formData.email,
-      first_name: formData.nombre,
-      last_name: formData.apellido,
-      locality: formData.ciudad,
-      municipality: formData.comunidad,
-      password: formData.passwd || undefined, // Solo enviar la contraseña si fue cambiada
-    };
+    
+    // Preparar datos para actualización
+    const updateData = {...formData};
+    delete updateData.confirmPassword;
+    
+    // Si no hay nueva contraseña, no enviarla
+    if (!updateData.password) {
+      delete updateData.password;
+    }
+    
+    // Asegurarnos que birth_date tiene el formato correcto
+    if (updateData.birth_date) {
+      const date = new Date(updateData.birth_date);
+      if (isNaN(date.getTime())) {
+        setError('Fecha de nacimiento inválida');
+        return;
+      }
+      updateData.birth_date = date.toISOString().split('T')[0];
+    }
 
     try {
-      const response = await fetch('https://das-p2-backend.onrender.com/api/users/update/', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al actualizar los datos.');
+      setUpdating(true);
+      setError('');
+      setSuccess('');
+      
+      await updateUserProfile(updateData);
+      
+      setSuccess('Perfil actualizado correctamente');
+      
+      // Limpiar campos de contraseña
+      setFormData(prev => ({
+        ...prev,
+        password: '',
+        confirmPassword: ''
+      }));
+    } catch (err) {
+      console.error('Error al actualizar perfil:', err);
+      
+      // Comprobar si el error contiene información detallada de validación
+      if (err.validationErrors) {
+        // Mostrar los errores específicos de la API en un formato más amigable
+        const errorMessages = [];
+        
+        Object.entries(err.validationErrors).forEach(([field, messages]) => {
+          const fieldName = getFieldDisplayName(field);
+          
+          if (Array.isArray(messages)) {
+            messages.forEach(message => {
+              errorMessages.push(`${fieldName}: ${formatErrorMessage(message)}`);
+            });
+          } else if (typeof messages === 'string') {
+            errorMessages.push(`${fieldName}: ${formatErrorMessage(messages)}`);
+          }
+        });
+        
+        setError(errorMessages.join('\n'));
+      } else if (err.message && err.message.includes('{')) {
+        // Intentar extraer y formatear JSON incluido en el mensaje de error
+        try {
+          const jsonStart = err.message.indexOf('{');
+          const jsonEnd = err.message.lastIndexOf('}') + 1;
+          const jsonString = err.message.substring(jsonStart, jsonEnd);
+          const errorData = JSON.parse(jsonString);
+          
+          const errorMessages = [];
+          Object.entries(errorData).forEach(([field, messages]) => {
+            const fieldName = getFieldDisplayName(field);
+            
+            if (Array.isArray(messages)) {
+              messages.forEach(message => {
+                errorMessages.push(`${fieldName}: ${formatErrorMessage(message)}`);
+              });
+            } else if (typeof messages === 'string') {
+              errorMessages.push(`${fieldName}: ${formatErrorMessage(messages)}`);
+            }
+          });
+          
+          setError(errorMessages.join('\n'));
+        } catch (e) {
+          // Si falla el parseo, mostrar mensaje original
+          setError(formatErrorMessage(err.message));
+        }
+      } else {
+        setError(formatErrorMessage(err.message) || 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.');
       }
-
-      setMensajeExito('Datos actualizados con éxito');
-      setTimeout(() => router.push('/inicio'), 2000); // Redirige tras 2 segundos
-    } catch (error) {
-      setMensajeError(error.message);
+    } finally {
+      setUpdating(false);
     }
   };
+  
+  // Función para obtener nombre legible de los campos
+  const getFieldDisplayName = (field) => {
+    const fieldNames = {
+      username: 'Nombre de usuario',
+      email: 'Email',
+      password: 'Contraseña',
+      first_name: 'Nombre',
+      last_name: 'Apellidos',
+      birth_date: 'Fecha de nacimiento',
+      locality: 'Localidad',
+      municipality: 'Municipio'
+    };
+    
+    return fieldNames[field] || field;
+  };
+  
+  // Función para formatear mensajes de error
+  const formatErrorMessage = (message) => {
+    // Traducción de mensajes comunes de error
+    const translations = {
+      'A user with that username already exists.': 'Este nombre de usuario ya está en uso.',
+      'This password is too common.': 'Esta contraseña es demasiado común.',
+      'This password is too short. It must contain at least 8 characters.': 'La contraseña es demasiado corta. Debe tener al menos 8 caracteres.',
+      'Enter a valid email address.': 'Introduce una dirección de email válida.',
+      'This field may not be blank.': 'Este campo no puede estar vacío.',
+      'Date has wrong format.': 'El formato de fecha es incorrecto. Usa el formato YYYY-MM-DD.',
+      'Date has wrong format. Use one of these formats instead: YYYY-MM-DD.': 'El formato de fecha es incorrecto. Usa el formato YYYY-MM-DD.'
+    };
+    
+    return translations[message] || message;
+  };
 
-  if (!usuarioData) {
-    return <p>Cargando...</p>;
+  // Si está cargando, mostrar un mensaje
+  if (loading) {
+    return <div className={styles.loading}>Cargando información del perfil...</div>;
   }
 
   return (
-    <div className={styles.container}>
-      <Header />
-
-      <main className={styles.main}>
-        <h1>Editar cuenta</h1>
-        <form onSubmit={handleSubmit} id="editar-cuenta" className={styles.form}>
-          <label htmlFor="nombre" className={styles.label}>Nombre</label>
-          <input
-            id="nombre"
-            type="text"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="apellido" className={styles.label}>Apellido</label>
-          <input
-            id="apellido"
-            type="text"
-            value={formData.apellido}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="dni" className={styles.label}>DNI</label>
-          <input
-            id="dni"
-            type="text"
-            value={formData.dni}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="direccion" className={styles.label}>Dirección</label>
-          <input
-            id="direccion"
-            type="text"
-            value={formData.direccion}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="comunidad" className={styles.label}>Comunidad</label>
-          <select
-            id="comunidad"
-            value={formData.comunidad}
-            onChange={handleComunidadChange}
-            required
-          >
-            <option value="">Selecciona una comunidad</option>
-            {Object.keys(comunidades).map((comunidad) => (
-              <option key={comunidad} value={comunidad}>
-                {comunidad}
-              </option>
+    <div className={styles.profileEditContainer}>
+      <div className={styles.profileEditBox}>
+        <h2 className={styles.title}>Editar Perfil</h2>
+        
+        {error && (
+          <div className={styles.error}>
+            {error.split('\n').map((line, index) => (
+              <div key={index} className={styles.errorLine}>{line}</div>
             ))}
-          </select>
-
-          <label htmlFor="ciudad" className={styles.label}>Ciudad</label>
-          <select
-            id="ciudad"
-            value={formData.ciudad}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecciona una ciudad</option>
-            {ciudades.map((ciudad) => (
-              <option key={ciudad} value={ciudad}>
-                {ciudad}
-              </option>
-            ))}
-          </select>
-
-          <label htmlFor="email" className={styles.label}>Correo Electrónico</label>
-          <input
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="usuario" className={styles.label}>Usuario</label>
-          <input
-            id="usuario"
-            type="text"
-            value={formData.usuario}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="passwd" className={styles.label}>Contraseña</label>
-          <input
-            id="passwd"
-            type="password"
-            value={formData.passwd}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="repeatPasswd" className={styles.label}>Repetir contraseña</label>
-          <input
-            id="repeatPasswd"
-            type="password"
-            value={formData.repeatPasswd}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="imagen" className={styles.label}>Imagen</label>
-          <input id="imagen" type="file" onChange={handleFileChange} />
-
-          {mensajeError && <p style={{ color: 'red' }}>{mensajeError}</p>}
-          {mensajeExito && <p style={{ color: 'green' }}>{mensajeExito}</p>}
-
-          <button className={styles.formButtonSubmit} type="submit">Actualizar</button>
-
-          <div className={styles.formButtons}>
-            <button className={styles.formButton} type="reset">Limpiar Formulario</button>
+          </div>
+        )}
+        {success && <div className={styles.success}>{success}</div>}
+        
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="username">Nombre de usuario*</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                disabled // El nombre de usuario no se puede modificar
+                className={styles.input}
+                title="El nombre de usuario no se puede cambiar"
+              />
+              <small>El nombre de usuario no se puede modificar</small>
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email*</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+          </div>
+          
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="password">Nueva contraseña</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="Dejar en blanco para no cambiarla"
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="confirmPassword">Confirmar contraseña</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="Confirme la nueva contraseña"
+              />
+            </div>
+          </div>
+          
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="first_name">Nombre*</label>
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="last_name">Apellidos*</label>
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label htmlFor="birth_date">Fecha de nacimiento*</label>
+            <input
+              type="date"
+              id="birth_date"
+              name="birth_date"
+              value={formData.birth_date}
+              onChange={handleChange}
+              required
+              className={styles.input}
+            />
+          </div>
+          
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="locality">Localidad*</label>
+              <input
+                type="text"
+                id="locality"
+                name="locality"
+                value={formData.locality}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="municipality">Municipio*</label>
+              <input
+                type="text"
+                id="municipality"
+                name="municipality"
+                value={formData.municipality}
+                onChange={handleChange}
+                required
+                className={styles.input}
+              />
+            </div>
+          </div>
+          
+          <div className={styles.buttonGroup}>
             <button
-              className={styles.formButton}
               type="button"
-              onClick={() => router.push('/inicio')}
+              onClick={() => router.push('/profile')}
+              className={styles.cancelButton}
+              disabled={updating}
             >
-              Volver a la Página de Inicio
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className={styles.saveButton}
+              disabled={updating}
+            >
+              {updating ? 'Actualizando...' : 'Guardar cambios'}
             </button>
           </div>
         </form>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 }
