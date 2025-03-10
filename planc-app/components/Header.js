@@ -16,7 +16,6 @@ export default function Header() {
     router.push('/');
   };
   const handleCuenta = () => {
-    logout();
     router.push('/informacion');
   };
 
