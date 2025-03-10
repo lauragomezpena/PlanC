@@ -352,7 +352,7 @@ export default function UserProfileEditPage() {
 
             <button
               type="button"
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/informacion')}
               className={styles.cancelButton}
               disabled={updating}
             >
