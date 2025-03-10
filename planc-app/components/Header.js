@@ -15,6 +15,10 @@ export default function Header() {
     logout();
     router.push('/');
   };
+  const handleCuenta = () => {
+    logout();
+    router.push('/informacion');
+  };
 
   const handleLogoClick = () => {
     router.push('/');
@@ -34,14 +38,15 @@ export default function Header() {
       </Link>
       <nav className={styles.navLink}>
         {currentUser ? (
-          <>
-            <Link className={styles.navLink} href="/informacion">
-              Mi Cuenta
-            </Link>
-            <button onClick={handleLogout} className={styles.logoutButton}>
+          <div className={styles.formButtons}>
+            <button  onClick={handleCuenta} className={styles.formButton}>
+            Mi Cuenta
+            </button>
+            <a/>
+            <button onClick={handleLogout} className={styles.formButton}>
               Cerrar sesión
             </button>
-          </>
+          </div>
         ) : (
           <>
             <Link className={styles.navLink} href="/inicio">

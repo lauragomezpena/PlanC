@@ -353,14 +353,14 @@ export default function UserProfileEditPage() {
             <button
               type="button"
               onClick={() => router.push('/informacion')}
-              className={styles.cancelButton}
+              className={styles.formButton}
               disabled={updating}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className={styles.saveButton}
+              className={styles.formButtonSubmit}
               disabled={updating}
             >
               {updating ? 'Actualizando...' : 'Guardar cambios'}
