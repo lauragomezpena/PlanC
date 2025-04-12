@@ -1,0 +1,36 @@
+/* FORM */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    display: center;
+  }
+  
+.label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+  }
+
+  .formButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 1;
+    background-color: #7c8084;
+    color: #fff;
+  }
+  .formButtonSubmit {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 1;
+    background-color: #668eba;
+    color: #fff;
+  }  

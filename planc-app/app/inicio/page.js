@@ -1,94 +1,61 @@
 'use client';
-import styles from "../../app/page.module.css";
+import styles from "../page.module.css";
+import React from "react";
+import Link from "next/link";
+import { doLogin } from "./utils";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../utils/auth';
+
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  
-  const router = useRouter();
-  const { login } = useAuth();
 
+  const router = useRouter();
+  const [error, setError] = useState('');
+  const[loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  
   const handleClear = () => {
-    setUser('');
-    setPasswd('');
-    setError('');
+    setFormData({
+      username: '',
+      password: ''
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleOnSubmit = async(event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const user = formData.get('username');
+    const passwd = formData.get('password');
+
     setLoading(true);
-    setError('');
-    
     try {
-      console.log('Intentando iniciar sesión con:', { username, password });
-      
-      // Usar la función login del contexto de autenticación
-      await login(username, password);
-      
-      console.log('Login exitoso');
-      router.push('/');
-    } catch (error) {
-      console.error('Error durante login:', error);
-      
-  
-      if (error.validationErrors) {
-        const errorMessages = [];
-        
-        Object.entries(error.validationErrors).forEach(([field, messages]) => {
-          const fieldName = getFieldDisplayName(field);
-          
-          if (Array.isArray(messages)) {
-            messages.forEach(message => {
-              errorMessages.push(`${fieldName}: ${formatErrorMessage(message)}`);
-            });
-          } else if (typeof messages === 'string') {
-            errorMessages.push(`${fieldName}: ${formatErrorMessage(messages)}`);
-          }
-        });
-        
-        if (errorMessages.length > 0) {
-          setError(errorMessages.join('\n'));
-        } else {
-          setError('Error en el inicio de sesión. Por favor, verifica tus credenciales.');
-        }
-      } else {
-        setError('Error en el inicio de sesión. Por favor, verifica tus credenciales.');
-      }
-    } finally {
-      setLoading(false);
+      const userLogged = await doLogin(user, passwd);
+
+      if (userLogged.error) {
+        alert(userLogged.error);
+        return; 
+    }
+
+    localStorage.setItem("token-jwt", userLogged.access);
+    localStorage.setItem("userName", userLogged.username);
+
+    
+    router.push('/'); 
+    
+    }
+    catch{ alert("Algo salio mal");
+    }
+   
+    finally {
+      setLoading(false);  
+      router.refresh();
     }
   };
-  
 
-  const getFieldDisplayName = (field) => {
-    const fieldNames = {
-      username: 'Nombre de usuario',
-      email: 'Email',
-      password: 'Contraseña',
-      non_field_errors: 'Error',
-      detail: 'Detalle'
-    };
-    
-    return fieldNames[field] || field;
-  };
   
-
-  const formatErrorMessage = (message) => {
-    const translations = {
-      'A user with that username already exists.': 'Este nombre de usuario ya está en uso.',
-      'This password is too common.': 'Esta contraseña es demasiado común.',
-      'Unable to log in with provided credentials.': 'No se puede iniciar sesión con las credenciales proporcionadas.',
-      'This field may not be blank.': 'Este campo no puede estar vacío.',
-      'No active account found with the given credentials': 'No se encontró una cuenta activa con las credenciales proporcionadas.'
-    };
-    
-    return translations[message] || message;
-  };
 
   return (
 
@@ -97,31 +64,19 @@ export default function LoginPage() {
         <br />
         <h2>Si no tienes cuenta, <a href="/registro">Regístrate</a></h2>
         
-        {error && (
-          <div className={styles.error}>
-            {error.split('\n').map((line, index) => (
-              <div key={index} className={styles.errorLine}>{line}</div>
-            ))}
-          </div>
-        )}
         
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleOnSubmit}>
         <label htmlFor="user" className={styles.label}>Usuario</label>
           <input
             type="text"
-            className={styles.loginFormInput}
             required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            name="username"
           />
           <label htmlFor="passwd" className={styles.label}>Contraseña</label>
           <input
             type="password"
-            placeholder="Contraseña"
-            className={styles.loginFormInput}
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name = "password"
           />
           <button 
             type="submit" 
@@ -138,9 +93,6 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
-        
-
-        
       </div>
 
   );

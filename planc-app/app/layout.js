@@ -8,7 +8,7 @@ import { AuthProvider } from '../utils/auth';
 
 export default function RootLayout({ children }) {
   return (
-    <AuthProvider>
+    <>
       <html lang="es">
         <body className={styles.container}>
           <Header />
@@ -16,6 +16,6 @@ export default function RootLayout({ children }) {
           <Footer />
         </body>
       </html>
-    </AuthProvider>
+    </>
   );
 }
