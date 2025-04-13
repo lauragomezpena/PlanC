@@ -33,3 +33,25 @@ export async function crearPuja({ token, auctionId, price }) {
       return { success: false, error: error.message };
     }
   };
+
+  export const obtenerPujas = async (auctionId, token) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/auctions/subastas/${auctionId}/pujas/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` })
+        }
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.error || 'No se pudieron obtener las pujas');
+      }
+  
+      return { success: true, pujas: data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };

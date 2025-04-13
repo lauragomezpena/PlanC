@@ -50,6 +50,10 @@ export default function Header() {
   const handleCrear = () => {
     router.push('/crearSubasta');
   };
+  
+  const handleSubastas = () => {
+    router.push('/misSubastas');
+  };
 
   return (
     <header className={styles.header}>
@@ -68,6 +72,9 @@ export default function Header() {
           <div className={styles.formButtons}>
             <button onClick={handleCuenta} className={styles.formButton}>
               Mi Cuenta
+            </button>
+            <button onClick={handleSubastas} className={styles.formButton}>
+              Subastas
             </button>
             <a />
             <button onClick={handleLogout} className={styles.formButton}>
