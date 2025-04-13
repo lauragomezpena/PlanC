@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from "../page.module.css";
-import { fetchUserProfileData } from './utils'; // ajusta la ruta si es necesario
+import { fetchUserProfileData, changePassword } from './utils';
 
 export default function UserProfilePage() {
   const [profileData, setProfileData] = useState({
@@ -18,6 +18,11 @@ export default function UserProfilePage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -47,6 +52,34 @@ export default function UserProfilePage() {
     fetchData();
   }, [router]);
 
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Las contraseñas no coinciden.');
+      return;
+    }
+
+    const token = localStorage.getItem('token-jwt');
+
+    if (!token) {
+      setError('Token no encontrado. Por favor, vuelve a iniciar sesión.');
+      return;
+    }
+
+    try {
+      const result = await changePassword(token, oldPassword, newPassword);
+      setPasswordSuccess(result.detail || 'Contraseña cambiada correctamente.');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err) {
+      setPasswordError(err.message || 'Error al cambiar la contraseña.');
+    }
+  };
+
   if (loading) {
     return <div className={styles.loading}>Cargando información del perfil...</div>;
   }
@@ -57,8 +90,8 @@ export default function UserProfilePage() {
 
   return (
     <div className={styles.form}>
-      <div className={styles.profileViewBox}>
-        <h2 className={styles.title}>Información del Perfil</h2>
+      <div>
+        <h2>Información del Perfil</h2>
 
         <form className={styles.form}>
           <label className={styles.label}>Nombre de usuario</label>
@@ -81,6 +114,40 @@ export default function UserProfilePage() {
 
           <label className={styles.label}>Municipio</label>
           <input type="text" value={profileData.municipality} disabled className={styles.input} />
+        </form>
+
+        <h3>Cambiar contraseña</h3>
+        <form onSubmit={handlePasswordChange} className={styles.form}>
+          <label>
+            Contraseña actual:
+            <input
+              type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Nueva contraseña:
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Confirmar nueva contraseña:
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </label>
+          {passwordError && <p className={styles.error}>{passwordError}</p>}
+          {passwordSuccess && <p className={styles.success}>{passwordSuccess}</p>}
+          <button type="submit">Cambiar contraseña</button>
         </form>
       </div>
     </div>
