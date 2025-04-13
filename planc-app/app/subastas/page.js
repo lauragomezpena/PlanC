@@ -3,6 +3,7 @@ import { subastas } from './constants';
 import styles from './page.module.css';
 import { useSearchParams } from 'next/navigation';
 import AuctionCard from './(partials)/AuctionCard/AuctionCard';
+import { handleAuction, createAuction } from './utils';
 
 const Auctions = () => {
   const searchParams = useSearchParams();
