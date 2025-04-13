@@ -1,0 +1,41 @@
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #e8e8e8;
+    padding: 10px 20px;
+    height: auto;
+  }
+
+  .logo {
+    width: 80px;
+    height: auto;
+  }
+  
+  .navLink {
+    margin-right: 70px; 
+  }
+
+  .formButtons {
+    display: flex;        
+    justify-content: space-between; 
+    align-items: center;     
+    flex-wrap: wrap;         
+  }
+  
+  .formButton {
+    margin: 5px;         
+    padding: 10px 20px;      
+    background-color: #5dc1b9;
+    color: white;      
+    border: none;           
+    border-radius: 5px;    
+    cursor: pointer;         
+    text-align: center;
+  }
+  
+  .formButton:hover {
+    background-color: #b5b8b1;  
+  }
+  

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from "../page.module.css";
+import { fetchUserProfileData, changePassword } from './utils';
 
 export default function UserProfilePage() {
   const [profileData, setProfileData] = useState({
@@ -17,10 +18,15 @@ export default function UserProfilePage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchData = async () => {
       const token = localStorage.getItem('token-jwt');
 
       if (!token) {
@@ -32,30 +38,8 @@ export default function UserProfilePage() {
         setLoading(true);
         setError('');
 
-        const response = await fetch('https://das-p2-backend.onrender.com/api/users/profile/', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Sesión expirada o error al obtener el perfil.');
-        }
-
-        const profile = await response.json();
-
-        setProfileData({
-          username: profile.username || '',
-          email: profile.email || '',
-          first_name: profile.first_name || '',
-          last_name: profile.last_name || '',
-          birth_date: profile.birth_date || '',
-          locality: profile.locality || '',
-          municipality: profile.municipality || ''
-        });
-
+        const data = await fetchUserProfileData(token);
+        setProfileData(data);
       } catch (err) {
         console.error('Error al cargar perfil:', err);
         setError('Error al cargar el perfil. Por favor, inténtalo de nuevo más tarde.');
@@ -65,8 +49,36 @@ export default function UserProfilePage() {
       }
     };
 
-    fetchUserProfile();
+    fetchData();
   }, [router]);
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Las contraseñas no coinciden.');
+      return;
+    }
+
+    const token = localStorage.getItem('token-jwt');
+
+    if (!token) {
+      setError('Token no encontrado. Por favor, vuelve a iniciar sesión.');
+      return;
+    }
+
+    try {
+      const result = await changePassword(token, oldPassword, newPassword);
+      setPasswordSuccess(result.detail || 'Contraseña cambiada correctamente.');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err) {
+      setPasswordError(err.message || 'Error al cambiar la contraseña.');
+    }
+  };
 
   if (loading) {
     return <div className={styles.loading}>Cargando información del perfil...</div>;
@@ -78,38 +90,65 @@ export default function UserProfilePage() {
 
   return (
     <div className={styles.form}>
-      <div className={styles.profileViewBox}>
-        <h2 className={styles.title}>Información del Perfil</h2>
+      <div>
+        <h2>Información del Perfil</h2>
 
-        
         <form className={styles.form}>
           <label className={styles.label}>Nombre de usuario</label>
-          <input type="text" value={profileData.username} disabled  />
+          <input type="text" value={profileData.username} disabled />
 
           <label className={styles.label}>Email</label>
           <input type="email" value={profileData.email} disabled />
 
-
           <label className={styles.label}>Nombre</label>
-          <input type="text" value={profileData.first_name} disabled  />
-
+          <input type="text" value={profileData.first_name} disabled />
 
           <label className={styles.label}>Apellidos</label>
           <input type="text" value={profileData.last_name} disabled className={styles.input} />
 
-
           <label className={styles.label}>Fecha de nacimiento</label>
           <input type="date" value={profileData.birth_date} disabled className={styles.input} />
-
 
           <label className={styles.label}>Localidad</label>
           <input type="text" value={profileData.locality} disabled className={styles.input} />
 
           <label className={styles.label}>Municipio</label>
           <input type="text" value={profileData.municipality} disabled className={styles.input} />
+        </form>
 
-
-          </form>
+        <h3>Cambiar contraseña</h3>
+        <form onSubmit={handlePasswordChange} className={styles.form}>
+          <label>
+            Contraseña actual:
+            <input
+              type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Nueva contraseña:
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Confirmar nueva contraseña:
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </label>
+          {passwordError && <p className={styles.error}>{passwordError}</p>}
+          {passwordSuccess && <p className={styles.success}>{passwordSuccess}</p>}
+          <button type="submit">Cambiar contraseña</button>
+        </form>
       </div>
     </div>
   );

@@ -1,0 +1,34 @@
+.formButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 1;
+    background-color: #bcbcbc;
+    color: #fff;
+    margin: 5%;
+  }
+
+
+.formButtonDelete {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 1;
+    background-color: #ec5252;
+    color: #fff;
+    margin: 5%;
+  }
+
+.formButtonDelete:hover {
+    background-color: #b82828;
+  }
+
+.formButton:hover {
+    background-color: #7c8084;
+  }

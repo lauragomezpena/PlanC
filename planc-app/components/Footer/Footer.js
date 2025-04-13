@@ -1,5 +1,5 @@
 
-import styles from "./componentes.module.css";
+import styles from "./styles.module.css";
 
 export default function Footer() {
     return (

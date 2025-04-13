@@ -1,28 +1,10 @@
-'use client';
+import React, { Suspense } from 'react';
+import DetalleSubasta from './detalleSubasta';
 
-import React from 'react';
-import { useSearchParams } from 'next/navigation';
-import { subastas } from '../subastas/constants';
-
-const DetalleSubasta = () => {
-  const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get('id'), 10);
-
-  const subasta = subastas.find((s) => s.id === id);
-
-  if (!subasta) {
-    return <p>Subasta no encontrada</p>;
-  }
-
+export default function DetalleSubastaPage() {
   return (
-    <div>
-      <h1>{subasta.nombre}</h1>
-      <p>Precio: {subasta.precio}€</p>
-      <p>Descripción: {subasta.descripcion}</p>
-      <p>Categoría: {subasta.categoria}</p>
-      <p>{subasta.open ? 'Subasta abierta' : 'Subasta cerrada'}</p>
-    </div>
+    <Suspense fallback={<div>Cargando subasta...</div>}>
+      <DetalleSubasta />
+    </Suspense>
   );
-};
-
-export default DetalleSubasta;
+}

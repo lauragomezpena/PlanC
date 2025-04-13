@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import styles from './componentes.module.css';
+import styles from './styles.module.css';
 import myImage from '@/public/logo.jpg';
 
 export default function Header() {
@@ -46,7 +46,18 @@ export default function Header() {
   const handleRegistro = () => {
     router.push('/registro');
   };
+  
+  const handleCrear = () => {
+    router.push('/crearSubasta');
+  };
+  
+  const handleSubastas = () => {
+    router.push('/misSubastas');
+  };
 
+  const handlePujas = () =>{
+    router.push('/misPujas');
+  };
   return (
     <header className={styles.header}>
       <Link href="/" passHref>
@@ -65,9 +76,20 @@ export default function Header() {
             <button onClick={handleCuenta} className={styles.formButton}>
               Mi Cuenta
             </button>
+            <button onClick={handleSubastas} className={styles.formButton}>
+              Mis Subastas
+            </button>
+            <a />
+            <button onClick={handlePujas} className={styles.formButton}>
+              Mis Pujas
+            </button>
             <a />
             <button onClick={handleLogout} className={styles.formButton}>
               Cerrar sesión
+            </button>
+            <a />
+            <button onClick={handleCrear} className={styles.formButton}>
+              +
             </button>
           </div>
         ) : (
