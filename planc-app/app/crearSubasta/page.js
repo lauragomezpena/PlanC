@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import styles from "./page.module.css"; // Importa el CSS Module
-import { createAuction } from "./utils"; // Importa la función de utilidades
+import { useState, useEffect } from "react";
+import styles from "./page.module.css";
+import { createAuction, fetchCategories } from "./utils";
 
 export default function NewAuctionForm() {
+  const [categories, setCategories] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    closingDate: "",
-    creationDate: "",
-    startingPrice: "",
+    closing_date: "",
+    starting_price: "",
     stock: "",
     rating: "",
     category: "",
@@ -18,7 +20,18 @@ export default function NewAuctionForm() {
     image: null,
   });
 
-  const [imagePreview, setImagePreview] = useState(null);
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error cargando categorías:", error);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -36,15 +49,22 @@ export default function NewAuctionForm() {
     e.preventDefault();
 
     try {
-      await createAuction(formData); // Usamos la función de utils.js
+      const closingDate = new Date(formData.closing_date);
+      closingDate.setHours(23, 59, 0);
+
+      const updatedData = {
+        ...formData,
+        closing_date: closingDate.toISOString(),
+      };
+
+      await createAuction(updatedData);
 
       alert("Subasta creada correctamente.");
       setFormData({
         title: "",
         description: "",
-        closingDate: "",
-        creationDate: "",
-        startingPrice: "",
+        closing_date: "",
+        starting_price: "",
         stock: "",
         rating: "",
         category: "",
@@ -62,22 +82,33 @@ export default function NewAuctionForm() {
     <form className={styles.form} onSubmit={handleSubmit}>
       <label htmlFor="title" className={styles.label}>Título</label>
       <input name="title" value={formData.title} onChange={handleChange} className={styles.input} required />
+
       <label htmlFor="description" className={styles.label}>Descripción</label>
       <textarea name="description" value={formData.description} onChange={handleChange} className={styles.input} required />
-      <label htmlFor="closingDate" className={styles.label}>Fecha de cierre</label>
-      <input type="date" name="closingDate" value={formData.closingDate} onChange={handleChange} className={styles.input} required />
-      <label htmlFor="creationDate" className={styles.label}>Fecha de creación</label>
-      <input type="date" name="creationDate" value={formData.creationDate} onChange={handleChange} className={styles.input} required />
-      <label htmlFor="startingPrice" className={styles.label}>Precio</label>
-      <input type="number" step="0.01" name="startingPrice" value={formData.startingPrice} onChange={handleChange} placeholder="Precio de salida" className={styles.input} required />
+
+      <label htmlFor="closing_date" className={styles.label}>Fecha de cierre</label>
+      <input type="date" name="closing_date" value={formData.closing_date} onChange={handleChange} className={styles.input} required />
+
+      <label htmlFor="starting_price" className={styles.label}>Precio de salida</label>
+      <input type="number" step="0.01" name="starting_price" value={formData.starting_price} onChange={handleChange} className={styles.input} required />
+
       <label htmlFor="stock" className={styles.label}>Stock</label>
-      <input type="number" name="stock" value={formData.stock} onChange={handleChange} placeholder="Stock" className={styles.input} required />
-      <label htmlFor="rating" className={styles.label}>Valoración (0-5)</label>
-      <input type="number" min="0" max="5" step="0.1" name="rating" value={formData.rating} onChange={handleChange} placeholder="Valoración (0-5)" className={styles.input} required />
+      <input type="number" name="stock" value={formData.stock} onChange={handleChange} className={styles.input} required />
+
+      <label htmlFor="rating" className={styles.label}>Valoración (1-5)</label>
+      <input type="number" min="1" max="5" step="1" name="rating" value={formData.rating} onChange={handleChange} className={styles.input} required />
+
       <label htmlFor="category" className={styles.label}>Categoría</label>
-      <input name="category" value={formData.category} onChange={handleChange} placeholder="Categoría" className={styles.input} required />
+      <select name="category" value={formData.category} onChange={handleChange} className={styles.input} required>
+        <option value="">Selecciona una categoría</option>
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.id}>{cat.name}</option>
+        ))}
+      </select>
+
       <label htmlFor="brand" className={styles.label}>Marca</label>
-      <input name="brand" value={formData.brand} onChange={handleChange} placeholder="Marca" className={styles.input} required />
+      <input name="brand" value={formData.brand} onChange={handleChange} className={styles.input} required />
+
       <label htmlFor="image" className={styles.label}>Imagen</label>
       <input type="file" name="image" accept="image/*" onChange={handleChange} className={styles.input} required />
 
