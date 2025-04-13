@@ -4,7 +4,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from "./page.module.css";
-import { AuthProvider } from '../utils/auth';
 
 export default function RootLayout({ children }) {
   return (
@@ -19,3 +18,4 @@ export default function RootLayout({ children }) {
     </>
   );
 }
+  
