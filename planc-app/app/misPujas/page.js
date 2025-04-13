@@ -64,9 +64,13 @@ const MisPujas = () => {
             <li key={puja.id} style={{ marginBottom: '1rem' }}>
               Has pujado en la subasta <strong>{puja.title}</strong> : {puja.price}€
               <br />
+              <button onClick={() => router.push(`/editarPuja/${puja.id}`)} className={styles.formButton}>
+                Editar
+              </button>
               <button onClick={() => handleDelete(puja.id)} className={styles.formButtonDelete}>
                 Eliminar
               </button>
+
             </li>
           ))}
         </ul>
