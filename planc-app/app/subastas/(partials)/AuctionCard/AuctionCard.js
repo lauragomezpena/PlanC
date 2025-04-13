@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 import Button  from '@/components/Button/button';
 import { useRouter } from 'next/navigation';
 
-const AuctionCard = ({ id, nombre,precio,open, descripcion, categoria }) => {
+const AuctionCard = ({ id, nombre,precio, open, descripcion, categoria }) => {
   const router = useRouter();
 
   const handleClick = () => {
