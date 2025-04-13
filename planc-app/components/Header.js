@@ -55,6 +55,9 @@ export default function Header() {
     router.push('/misSubastas');
   };
 
+  const handlePujas = () =>{
+    router.push('/misPujas');
+  };
   return (
     <header className={styles.header}>
       <Link href="/" passHref>
@@ -74,7 +77,11 @@ export default function Header() {
               Mi Cuenta
             </button>
             <button onClick={handleSubastas} className={styles.formButton}>
-              Subastas
+              Mis Subastas
+            </button>
+            <a />
+            <button onClick={handlePujas} className={styles.formButton}>
+              Mis Pujas
             </button>
             <a />
             <button onClick={handleLogout} className={styles.formButton}>

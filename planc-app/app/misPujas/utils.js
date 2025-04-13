@@ -1,6 +1,6 @@
-export const obtenerMisSubastas = async (token) => {
+export const obtenerMisPujas = async (token) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/auctions/misSubastas/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/auctions/misPujas/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -11,20 +11,20 @@ export const obtenerMisSubastas = async (token) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || 'No se pudieron obtener las subastas');
+      throw new Error(data.error || 'No se pudieron obtener las pujas');
     }
 
-    return { success: true, subastas: data }; 
+    return { success: true, pujas: data }; 
   } catch (error) {
     return { success: false, error: error.message }; 
   }
 };
 
 
-export const deleteAuction = async (id) => {
+export const deleteBid = async (id) => {
   const token = localStorage.getItem("token-jwt");
 
-  const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${id}/`, {
+  const response = await fetch(`http://127.0.0.1:8000/api/auctions/pujas/${id}/`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const deleteAuction = async (id) => {
   });
 
   if (!response.ok) {
-    throw new Error("Error al eliminar la subasta.");
+    throw new Error("Error al eliminar la puja.");
   }
 
   return true;

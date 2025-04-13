@@ -17,16 +17,28 @@
     height: auto;
   }
 
-  .formButton {
-    padding: 10px 15px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    flex: 1;
+  .formButtons {
+    display: flex;        
+    justify-content: space-between; 
+    align-items: center;     
+    flex-wrap: wrap;         
   }
-
+  
+  .formButton {
+    margin: 5px;         
+    padding: 10px 20px;      
+    background-color: #5dc1b9;
+    color: white;      
+    border: none;           
+    border-radius: 5px;    
+    cursor: pointer;         
+    text-align: center;
+  }
+  
+  .formButton:hover {
+    background-color: #b5b8b1;  
+  }
+  
   .footer {
     grid-area: footer;
     text-align: center;
