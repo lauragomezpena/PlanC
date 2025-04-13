@@ -1,5 +1,6 @@
+import {URL} from '../../constants/url.js';
 export async function createAuction(token, auctionData) {
-    const response = await fetch('http://127.0.0.1:8000/api/auctions/subastas/', {
+    const response = await fetch(`${URL}/api/auctions/subastas/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`, // Token de autenticación
@@ -18,7 +19,7 @@ export async function createAuction(token, auctionData) {
 
 
 export async function handleAuction(token, auctionId, method = 'GET', updatedData = null) {
-    const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${auctionId}/`, {
+    const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/`, {
         method: method, // 'GET', 'PUT' o 'DELETE'
         headers: {
             'Authorization': `Bearer ${token}`, // Token de autenticación
@@ -37,7 +38,7 @@ export async function handleAuction(token, auctionId, method = 'GET', updatedDat
 
 export const fetchAuctions = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/`);
+      const response = await fetch(`${URL}/api/auctions/subastas/`);
       if (!response.ok) throw new Error('Error al obtener subastas');
       const data = await response.json();
       return data;

@@ -1,3 +1,4 @@
+
 export const fetchBidbyId = async (id) => {
   const token = localStorage.getItem("token-jwt");
   const response = await fetch(`http://127.0.0.1:8000/api/auctions/pujas/${id}/`, {

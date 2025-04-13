@@ -1,6 +1,7 @@
+import {URL} from '../../constants/url.js';
 export async function crearPuja({ token, auctionId, price }) {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${auctionId}/pujas/`, {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/pujas/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ export async function crearPuja({ token, auctionId, price }) {
   
   export const obtenerSubasta = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/auctions/subastas/${id}/`);
+      const response = await fetch(`${URL}/api/auctions/subastas/${id}/`);
       if (!response.ok) {
         throw new Error('No se pudo obtener la subasta');
       }
@@ -36,7 +37,7 @@ export async function crearPuja({ token, auctionId, price }) {
 
   export const obtenerPujas = async (auctionId, token) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/auctions/subastas/${auctionId}/pujas/`, {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/pujas/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

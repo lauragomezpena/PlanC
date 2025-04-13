@@ -1,5 +1,6 @@
+import {URL} from '../../constants/url.js';
 export async function fetchUserProfileData(token) {
-    const response = await fetch('http://127.0.0.1:8000/api/users/profile/', {
+    const response = await fetch(`${URL}/api/users/profile/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +27,7 @@ export async function fetchUserProfileData(token) {
 
 
 export const changePassword = async (token, oldPassword, newPassword) => {
-  const response = await fetch("http://127.0.0.1:8000/api/users/change-password/", {
+  const response = await fetch(`${URL}/api/users/change-password/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

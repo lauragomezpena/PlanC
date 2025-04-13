@@ -1,3 +1,5 @@
+
+import {URL} from '../../constants/url.js';
 export const createAuction = async (formData) => {
     const token = localStorage.getItem("token-jwt");
     const payload = new FormData();
@@ -6,7 +8,7 @@ export const createAuction = async (formData) => {
     }
   
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auctions/subastas/", {
+      const response = await fetch(`${URL}/api/auctions/subastas/`, {
         method: "POST",
         body: payload,
         headers: {
@@ -27,7 +29,7 @@ export const createAuction = async (formData) => {
 
 
 export async function fetchCategories() {
-    const res = await fetch("http://localhost:8000/api/auctions/categorias/");
+    const res = await fetch(`${URL}/api/auctions/categorias/`);
     if (!res.ok) {
       throw new Error("No se pudieron cargar las categorías");
     }

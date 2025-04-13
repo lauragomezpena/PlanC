@@ -1,6 +1,7 @@
+import {URL} from '../../constants/url.js';
 export const obtenerMisPujas = async (token) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/auctions/misPujas/`, {
+    const response = await fetch(`${URL}/api/auctions/misPujas/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +25,7 @@ export const obtenerMisPujas = async (token) => {
 export const deleteBid = async (id) => {
   const token = localStorage.getItem("token-jwt");
 
-  const response = await fetch(`http://127.0.0.1:8000/api/auctions/pujas/${id}/`, {
+  const response = await fetch(`${URL}/api/auctions/pujas/${id}/`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

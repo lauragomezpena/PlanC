@@ -1,6 +1,8 @@
+import { URL } from "@/constants/url";
+
 export const fetchAuctionById = async (id) => {
   const token = localStorage.getItem("token-jwt");
-  const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${id}/`, {
+  const response = await fetch(`${URL}/api/auctions/subastas/${id}/`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -20,7 +22,7 @@ export const updateAuction = async (id, formData) => {
     payload.append(key, formData[key]);
   }
 
-  const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${id}/`, {
+  const response = await fetch(`${URL}/api/auctions/subastas/${id}/`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -39,7 +41,7 @@ export const updateAuction = async (id, formData) => {
 export const deleteAuction = async (id) => {
   const token = localStorage.getItem("token-jwt");
 
-  const response = await fetch(`http://127.0.0.1:8000/api/auctions/subastas/${id}/`, {
+  const response = await fetch(`${URL}/api/auctions/subastas/${id}/`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -54,7 +56,7 @@ export const deleteAuction = async (id) => {
 };
 
 export async function fetchCategories() {
-  const res = await fetch("http://localhost:8000/api/auctions/categorias/");
+  const res = await fetch(`${URL}/api/auctions/categorias/`);
   if (!res.ok) {
     throw new Error("No se pudieron cargar las categorías");
   }
