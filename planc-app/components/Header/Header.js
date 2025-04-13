@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import styles from './componentes.module.css';
+import styles from './styles.module.css';
 import myImage from '@/public/logo.jpg';
 
 export default function Header() {
