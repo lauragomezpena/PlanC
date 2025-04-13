@@ -46,6 +46,10 @@ export default function Header() {
   const handleRegistro = () => {
     router.push('/registro');
   };
+  
+  const handleCrear = () => {
+    router.push('/crearSubasta');
+  };
 
   return (
     <header className={styles.header}>
@@ -68,6 +72,10 @@ export default function Header() {
             <a />
             <button onClick={handleLogout} className={styles.formButton}>
               Cerrar sesión
+            </button>
+            <a />
+            <button onClick={handleCrear} className={styles.formButton}>
+              +
             </button>
           </div>
         ) : (
