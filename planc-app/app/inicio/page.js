@@ -24,7 +24,7 @@ export default function LoginPage() {
     });
   };
 
-  const handleOnSubmit = async(event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const user = formData.get('username');
@@ -32,30 +32,21 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const userLogged = await doLogin(user, passwd);
+        const userLogged = await doLogin(user, passwd);
 
-      if (userLogged.error) {
-        alert(userLogged.error);
-        return; 
-    }
+        // Guarda los tokens en localStorage
+        localStorage.setItem("token-jwt", userLogged.access);
+        localStorage.setItem("refresh-token", userLogged.refresh);
+        localStorage.setItem("userName", user);
 
-    localStorage.setItem("token-jwt", userLogged.access);
-    localStorage.setItem("userName", userLogged.username);
-
-    
-    router.push('/'); 
-    
+        alert("Inicio de sesión exitoso");
+        router.push('/'); // Redirige al inicio
+    } catch (error) {
+        alert(`Error al iniciar sesión: ${error.message}`);
+    } finally {
+        setLoading(false);
     }
-    catch{ alert("Algo salio mal");
-    }
-   
-    finally {
-      setLoading(false);  
-      router.refresh();
-    }
-  };
-
-  
+    };  
 
   return (
 
