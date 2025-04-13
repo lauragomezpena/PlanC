@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import styles from './page.module.css';
 import { useSearchParams } from 'next/navigation';
 import AuctionCard from './(partials)/AuctionCard/AuctionCard';
@@ -54,4 +54,10 @@ const Auctions = () => {
   );
 };
 
-export default Auctions;
+export default function AuctionsPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <Auctions />
+    </Suspense>
+  );
+}
