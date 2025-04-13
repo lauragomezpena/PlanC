@@ -1,5 +1,6 @@
 export const subastas = [
     {
+      id:1, 
       nombre: "iPhone 13",
       precio: 750.00,
       open: true,
@@ -7,6 +8,7 @@ export const subastas = [
       descripcion: "iPhone 13 de 128GB, en excelente estado, color negro."
     },
     {
+      id:2,
       nombre: "Sofá de cuero",
       precio: 320.00,
       open: false,
@@ -14,6 +16,7 @@ export const subastas = [
       descripcion: "Sofá de cuero marrón para tres personas, muy cómodo y resistente."
     },
     {
+      id:3,
       nombre: "Pintura abstracta",
       precio: 1200.00,
       open: true,
@@ -21,6 +24,7 @@ export const subastas = [
       descripcion: "Obra original de artista local, pintura acrílica sobre lienzo."
     },
     {
+      id:4,
       nombre: "Camisa vintage",
       precio: 25.00,
       open: true,
@@ -28,6 +32,7 @@ export const subastas = [
       descripcion: "Camisa de los años 80, estilo retro, talla M."
     },
     {
+      id:5,
       nombre: "Moneda antigua romana",
       precio: 480.00,
       open: false,
@@ -35,6 +40,7 @@ export const subastas = [
       descripcion: "Moneda de bronce del Imperio Romano, muy bien conservada."
     },
     {
+      id:6,
       nombre: "Bicicleta de montaña",
       precio: 290.00,
       open: true,
@@ -42,6 +48,7 @@ export const subastas = [
       descripcion: "Bicicleta con suspensión delantera y frenos de disco hidráulicos."
     },
     {
+      id:7,
       nombre: "PS5 Edición Digital",
       precio: 550.00,
       open: false,
@@ -49,6 +56,7 @@ export const subastas = [
       descripcion: "Consola PlayStation 5 completamente nueva, sin uso."
     },
     {
+      id:8,
       nombre: "Mesa de comedor",
       precio: 410.00,
       open: true,
@@ -56,6 +64,7 @@ export const subastas = [
       descripcion: "Mesa de madera maciza para seis personas, estilo rústico."
     },
     {
+      id:9,
       nombre: "Grabado antiguo",
       precio: 900.00,
       open: true,
@@ -63,6 +72,7 @@ export const subastas = [
       descripcion: "Grabado enmarcado del siglo XIX en excelente estado."
     },
     {
+      id:10,
       nombre: "Chaqueta de cuero",
       precio: 150.00,
       open: false,
@@ -70,6 +80,7 @@ export const subastas = [
       descripcion: "Chaqueta negra de cuero genuino, talla L."
     },
     {
+      id:11,
       nombre: "Cámara Canon EOS 90D",
       precio: 870.00,
       open: true,
@@ -77,6 +88,7 @@ export const subastas = [
       descripcion: "Cámara réflex digital con lente 18-135mm incluida."
     },
     {
+      id:12,
       nombre: "Lámpara de pie vintage",
       precio: 65.00,
       open: true,
@@ -84,6 +96,7 @@ export const subastas = [
       descripcion: "Lámpara de pie de los años 60, funcional y decorativa."
     },
     {
+      id:13,
       nombre: "Escultura de mármol",
       precio: 1300.00,
       open: false,
@@ -91,6 +104,7 @@ export const subastas = [
       descripcion: "Escultura clásica hecha a mano en mármol blanco."
     },
     {
+      id:14,
       nombre: "Reloj de bolsillo antiguo",
       precio: 210.00,
       open: true,
@@ -98,6 +112,7 @@ export const subastas = [
       descripcion: "Reloj suizo de 1920, aún funciona perfectamente."
     },
     {
+      id:15,
       nombre: "Vestido de gala",
       precio: 180.00,
       open: false,
@@ -105,6 +120,7 @@ export const subastas = [
       descripcion: "Vestido largo color vino tinto, talla S, usado una vez."
     },
     {
+      id:16,
       nombre: "Scooter eléctrico Xiaomi",
       precio: 310.00,
       open: true,
@@ -112,6 +128,7 @@ export const subastas = [
       descripcion: "Scooter con autonomía de 30km y velocidad máxima de 25km/h."
     },
     {
+      id:17,
       nombre: "Smart TV Samsung 55''",
       precio: 620.00,
       open: true,
@@ -119,6 +136,7 @@ export const subastas = [
       descripcion: "Televisor 4K UHD con HDR, modelo 2023."
     },
     {
+      id:18,
       nombre: "Cama matrimonial de madera",
       precio: 500.00,
       open: false,
@@ -126,6 +144,7 @@ export const subastas = [
       descripcion: "Estructura sólida de madera natural con cabecera tallada."
     },
     {
+      id:19,
       nombre: "Cuadro de paisaje",
       precio: 240.00,
       open: true,
@@ -133,6 +152,7 @@ export const subastas = [
       descripcion: "Pintura al óleo de un paisaje montañoso, firmada por autor."
     },
     {
+      id:20,
       nombre: "Zapatillas Nike Air Max",
       precio: 95.00,
       open: false,
@@ -140,6 +160,8 @@ export const subastas = [
       descripcion: "Zapatillas originales, color blanco y rojo, talla 42."
     },
     {
+
+      id:21,
       nombre: "Colección de sellos",
       precio: 675.00,
       open: true,
@@ -147,6 +169,7 @@ export const subastas = [
       descripcion: "Colección de más de 100 sellos de diferentes países y épocas."
     },
     {
+      id:22,
       nombre: "Patinete eléctrico Dualtron",
       precio: 1300.00,
       open: true,
@@ -154,6 +177,7 @@ export const subastas = [
       descripcion: "Alta gama, doble motor, batería de larga duración."
     },
     {
+      id:23,
       nombre: "iPad Pro 11'' 2022",
       precio: 850.00,
       open: false,
@@ -161,6 +185,7 @@ export const subastas = [
       descripcion: "iPad Pro con chip M2 y 256GB de almacenamiento."
     },
     {
+      id:24,
       nombre: "Aparador antiguo",
       precio: 470.00,
       open: true,
@@ -168,6 +193,7 @@ export const subastas = [
       descripcion: "Aparador de madera noble con tallados, siglo XIX."
     },
     {
+      id:25,
       nombre: "Obra de arte contemporánea",
       precio: 1500.00,
       open: true,
@@ -175,6 +201,7 @@ export const subastas = [
       descripcion: "Pieza única con certificado de autenticidad."
     },
     {
+      id:26,
       nombre: "Chaqueta North Face",
       precio: 130.00,
       open: true,
@@ -182,6 +209,7 @@ export const subastas = [
       descripcion: "Chaqueta impermeable y térmica, ideal para senderismo."
     },
     {
+      id:27,
       nombre: "Monedas de colección europeas",
       precio: 380.00,
       open: false,
@@ -189,6 +217,7 @@ export const subastas = [
       descripcion: "Lote de monedas conmemorativas de varios países europeos."
     },
     {
+      id:28,
       nombre: "Skate eléctrico",
       precio: 440.00,
       open: true,
@@ -196,6 +225,7 @@ export const subastas = [
       descripcion: "Tabla con motor eléctrico y control remoto."
     },
     {
+      id:29,
       nombre: "Auriculares Sony WH-1000XM5",
       precio: 320.00,
       open: true,
@@ -203,137 +233,12 @@ export const subastas = [
       descripcion: "Auriculares inalámbricos con cancelación de ruido."
     },
     {
+      id:30,
       nombre: "Estantería industrial",
       precio: 210.00,
       open: true,
       categoria: "Muebles",
       descripcion: "Estilo moderno, metal y madera, 5 niveles."
-    },
-    {
-      nombre: "Retrato al óleo",
-      precio: 860.00,
-      open: false,
-      categoria: "Arte",
-      descripcion: "Retrato pintado a mano sobre lienzo, excelente técnica."
-    },
-    {
-      nombre: "Parka Columbia",
-      precio: 110.00,
-      open: true,
-      categoria: "Ropa",
-      descripcion: "Abrigo térmico para bajas temperaturas, color verde oliva."
-    },
-    {
-      nombre: "Juego de ajedrez artesanal",
-      precio: 175.00,
-      open: false,
-      categoria: "Coleccionables",
-      descripcion: "Piezas talladas en madera, tablero incluido."
-    },
-    {
-      nombre: "Moto eléctrica NIU",
-      precio: 2100.00,
-      open: true,
-      categoria: "Vehículos",
-      descripcion: "Autonomía de 80km, ideal para ciudad, incluye cargador."
-    },
-    {
-      nombre: "Laptop ASUS ZenBook",
-      precio: 950.00,
-      open: true,
-      categoria: "Electrónica",
-      descripcion: "Ultraligera, i7, 16GB RAM, SSD 1TB, pantalla OLED."
-    },
-    {
-      nombre: "Silla gamer ergonómica",
-      precio: 230.00,
-      open: false,
-      categoria: "Muebles",
-      descripcion: "Silla con soporte lumbar, ajustable y con reposabrazos."
-    },
-    {
-      nombre: "Lienzo moderno decorativo",
-      precio: 300.00,
-      open: true,
-      categoria: "Arte",
-      descripcion: "Ideal para salón u oficina, colores neutros."
-    },
-    {
-      nombre: "Vestido bohemio",
-      precio: 60.00,
-      open: true,
-      categoria: "Ropa",
-      descripcion: "Vestido largo de tela suave, estampado floral."
-    },
-    {
-      nombre: "Miniaturas Star Wars",
-      precio: 420.00,
-      open: true,
-      categoria: "Coleccionables",
-      descripcion: "Set de figuras de edición limitada, en caja original."
-    },
-    {
-      nombre: "Monopatín eléctrico",
-      precio: 380.00,
-      open: false,
-      categoria: "Vehículos",
-      descripcion: "Velocidad máxima de 20km/h, ideal para adolescentes."
-    },
-    {
-      nombre: "Auriculares Bose QuietComfort",
-      precio: 310.00,
-      open: true,
-      categoria: "Electrónica",
-      descripcion: "Inalámbricos con cancelación activa de ruido."
-    },
-    {
-      nombre: "Sillón reclinable",
-      precio: 470.00,
-      open: true,
-      categoria: "Muebles",
-      descripcion: "Tapizado en tela suave, reclinable y giratorio."
-    },
-    {
-      nombre: "Fotografía artística enmarcada",
-      precio: 270.00,
-      open: false,
-      categoria: "Arte",
-      descripcion: "Fotografía de paisaje urbano nocturno, edición limitada."
-    },
-    {
-      nombre: "Chamarra vaquera",
-      precio: 85.00,
-      open: true,
-      categoria: "Ropa",
-      descripcion: "Chamarra azul clásica con bordados, talla L."
-    },
-    {
-      nombre: "Cartas Pokémon colección base",
-      precio: 920.00,
-      open: true,
-      categoria: "Coleccionables",
-      descripcion: "Cartas originales en fundas protectoras, algunas raras."
-    },
-    {
-      nombre: "Bicicleta eléctrica urbana",
-      precio: 1250.00,
-      open: true,
-      categoria: "Vehículos",
-      descripcion: "Motor de 250W, batería extraíble, pantalla LCD."
-    },
-    {
-      nombre: "Tablet Samsung Galaxy Tab S8",
-      precio: 670.00,
-      open: true,
-      categoria: "Electrónica",
-      descripcion: "Pantalla AMOLED de 11'', 128GB, con stylus incluido."
-    },
-    {
-      nombre: "Cama individual con cajones",
-      precio: 390.00,
-      open: true,
-      categoria: "Muebles",
-      descripcion: "Ideal para habitaciones pequeñas, madera y blanco mate."
     }
   ];
   
