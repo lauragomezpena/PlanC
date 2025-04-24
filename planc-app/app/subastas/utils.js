@@ -53,12 +53,12 @@ export const fetchAuctions = async () => {
 // Obtener la valoración promedio de una subasta
 export const fetchAverageRating = async (auctionId) => {
     try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/`);
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/`);
       if (!response.ok) {
         throw new Error("Error al obtener la valoración promedio");
       }
       const data = await response.json();
-      return data.averageRating;
+      return data.average_rating;
     } catch (error) {
       console.error("Error en fetchAverageRating:", error);
       throw error;
@@ -85,6 +85,53 @@ export const fetchAverageRating = async (auctionId) => {
       return { success: true };
     } catch (error) {
       console.error("Error en sendRating:", error);
+      throw error;
+    }
+  };
+
+
+// Obtener la valoración del usuario para una subasta
+export const fetchUserRating = async (auctionId, token) => {
+    try {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null; // El usuario no ha valorado la subasta
+        }
+        throw new Error("Error al obtener la valoración del usuario");
+      }
+  
+      const data = await response.json();
+      return data.rating; // Asegúrate de que el backend devuelva el campo `rating`
+    } catch (error) {
+      console.error("Error en fetchUserRating:", error);
+      throw error;
+    }
+  };
+  
+  // Eliminar la valoración del usuario para una subasta
+  export const deleteUserRating = async (auctionId, token) => {
+    try {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al eliminar la valoración");
+      }
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error en deleteUserRating:", error);
       throw error;
     }
   };
