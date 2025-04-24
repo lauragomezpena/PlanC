@@ -47,3 +47,44 @@ export const fetchAuctions = async () => {
       return [];
     }
   };
+
+
+
+// Obtener la valoración promedio de una subasta
+export const fetchAverageRating = async (auctionId) => {
+    try {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/`);
+      if (!response.ok) {
+        throw new Error("Error al obtener la valoración promedio");
+      }
+      const data = await response.json();
+      return data.averageRating;
+    } catch (error) {
+      console.error("Error en fetchAverageRating:", error);
+      throw error;
+    }
+  };
+  
+  // Enviar una valoración para una subasta
+  export const sendRating = async (auctionId, value, token) => {
+    try {
+      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ value }),
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || "Error al enviar la valoración");
+      }
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error en sendRating:", error);
+      throw error;
+    }
+  };
