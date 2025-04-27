@@ -13,7 +13,7 @@ export default function Header() {
   const [userName, setUserName] = useState(null);
 
   useEffect(() => {
-    // Acceder a localStorage solo en el cliente
+    
     if (typeof window !== 'undefined') {
       setToken(localStorage.getItem("token-jwt"));
       setUserName(localStorage.getItem("userName"));
