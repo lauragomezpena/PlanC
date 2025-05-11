@@ -34,3 +34,8 @@
     background-color: #668eba;
     color: #fff;
   }  
+  .formButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }

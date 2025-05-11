@@ -11,7 +11,7 @@ const Auctions = () => {
   const filters = {
   search: searchParams.get('q')?.toLowerCase() || '',
   category: searchParams.get('category') || '',
-  // rating: searchParams.get('rating') || '',
+  rating: searchParams.get('rating') || '',
   open: searchParams.get('open') || '', // o 'open' / 'closed'
 };
 
