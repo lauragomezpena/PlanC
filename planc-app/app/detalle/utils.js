@@ -1,5 +1,6 @@
 import {URL} from '../../constants/url.js';
 
+// PUJA 
 export async function crearPuja({ token, auctionId, price }) {
     try {
       const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/pujas/`, {
@@ -22,21 +23,8 @@ export async function crearPuja({ token, auctionId, price }) {
       return { success: false, error: error.message };
     }
   }
-  
-  export const obtenerSubasta = async (id) => {
-    try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${id}/`);
-      if (!response.ok) {
-        throw new Error('No se pudo obtener la subasta');
-      }
-      const data = await response.json();
-      return { success: true, subasta: data };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
 
-  export const obtenerPujas = async (auctionId, token) => {
+   export const obtenerPujas = async (auctionId, token) => {
     try {
       const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/pujas/`, {
         method: 'GET',
@@ -57,7 +45,24 @@ export async function crearPuja({ token, auctionId, price }) {
       return { success: false, error: error.message };
     }
   };
+  
+  
+  // SUBASTA
+  export const obtenerSubasta = async (id) => {
+    try {
+      const response = await fetch(`${URL}/api/auctions/subastas/${id}/`);
+      if (!response.ok) {
+        throw new Error('No se pudo obtener la subasta');
+      }
+      const data = await response.json();
+      return { success: true, subasta: data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
 
+ 
+// COMENTARIO
   export async function crearComentario({ token, auctionId, title, text }) {
     try {
       const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/comentarios/`, {
@@ -102,29 +107,6 @@ export async function crearPuja({ token, auctionId, price }) {
       return { success: false, error: error.message };
     }
   };
-
-  export async function modificarComentario({ token, auctionId, comentarioId, title, text }) {
-    try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/comentarios/${comentarioId}/`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, text }),
-      });
-  
-      const data = await response.json();
-  
-      if (!response.ok) {
-        throw new Error(data.detail || 'Error al cambiar comentario');
-      }
-  
-      return { success: true, comentario: data };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  }
 
   export async function borrarComentario({ token, auctionId, comentarioId }) {
     try {

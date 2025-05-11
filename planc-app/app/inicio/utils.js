@@ -13,5 +13,5 @@ export const doLogin = async (username, password) => {
     if (!response.ok) {
         throw new Error(data.detail || "Error al iniciar sesión");
     }
-    return data; // Devuelve los tokens
+    return data; 
 };

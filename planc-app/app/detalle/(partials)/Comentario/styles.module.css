@@ -1,0 +1,38 @@
+.comentario {
+
+  /* background-color: #f9f9f9; */
+  /* border: 1px solid #ddd; */
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.botonComentario {   
+background-color: #5dc1b9;
+color: white;      
+border: none;                    
+text-align: center;
+padding: 0.4rem 0.8rem;
+margin-right: 0.5rem;
+border-radius: 4px;
+cursor: pointer;
+font-size: 0.9rem;
+transition: background-color 0.2s ease;
+}
+
+.botonComentario:hover {
+background-color: #4da8a0;  
+}
+
+
+.botones {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+.contenidoComentario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}

@@ -8,25 +8,30 @@ import { fetchAuctions } from './utils';
 
 const Auctions = () => {
   const searchParams = useSearchParams();
-  const query = searchParams.get('q')?.toLowerCase() || '';
+  const filters = {
+  search: searchParams.get('q')?.toLowerCase() || '',
+  category: searchParams.get('category') || '',
+  // rating: searchParams.get('rating') || '',
+  open: searchParams.get('open') || '', // o 'open' / 'closed'
+};
 
   const [auctions, setAuctions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadAuctions = async () => {
-      const data = await fetchAuctions();
-      setAuctions(data);
-      setLoading(false);
-    };
-    loadAuctions();
-  }, []);
+  const loadAuctions = async () => {
+    const data = await fetchAuctions(filters);
+    setAuctions(data);
+    setLoading(false);
+  };
+  loadAuctions();
+}, [searchParams.toString()]);
 
-  const filteredAuctions = auctions.filter((auction) =>
-    auction.title.toLowerCase().includes(query) ||
-    auction.description.toLowerCase().includes(query) ||
-    auction.category_name.toLowerCase().includes(query)
-  );
+  // const filteredAuctions = auctions.filter((auction) =>
+  //   auction.title.toLowerCase().includes(query) ||
+  //   auction.description.toLowerCase().includes(query) ||
+  //   auction.category_name.toLowerCase().includes(query)
+  // );
 
   return (
     <>
@@ -34,8 +39,8 @@ const Auctions = () => {
       <div className={styles.section}>
         {loading ? (
           <p>Cargando subastas...</p>
-        ) : filteredAuctions.length > 0 ? (
-          filteredAuctions.map((auction) => (
+        ) : auctions.length > 0 ? (
+          auctions.map((auction) => (
             <AuctionCard
               key={auction.id}
               id={auction.id}

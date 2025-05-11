@@ -35,25 +35,6 @@ align-items: center;
   height: auto;
 }
 
-/* Nav y botón */
-.nav {
-  margin-left: auto;
-}
-
-.navButton {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.navButton:hover {
-  background-color: #0056b3;
-}
 
 /* MAIN */
 .main {
@@ -75,35 +56,6 @@ align-items: center;
   display: center;
 }
 
-.formLabel {
-  text-align: left;
-  font-weight: bold;
-  margin-bottom: 2px;
-  font-size: 1rem;
-}
-
-.formInput {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-.formInput:focus {
-  border-color: #007BFF;
-  outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
-}
-
-/* Botones del formulario */
-.formButtons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .formButton {
   padding: 10px 15px;
   font-size: 1rem;
@@ -116,44 +68,6 @@ align-items: center;
   color: #fff;
 }
 
-.formButtonCancel {  
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  flex: 1;
-  background-color: #87898b;
-  color: #fff;
-}
-
-.formButtonCancel:hover {
-  background-color: #5a6268;
-}
-.formButton:hover {
-  background-color: #a6a7a8;
-}
-
-.formButtonSubmit {
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  flex: 1;
-  background-color: #668eba;
-  color: #fff;
-}
-
-.formButtonSubmit:hover {
-  background-color: #0056b3;
-}
-
-.formButton:active {
-  transform: scale(0.98);
-}
 
 /* FOOTER */
 .footer {
@@ -171,27 +85,6 @@ align-items: center;
   color: #777;
 }
 
-/* Imágenes */
-.productImage {
-  width: 150px;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-  margin: 10px auto;
-}
-
-.productImageDetail {
-  width: 300px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.label {
-  display: block;
-  text-align: left;
-  margin-bottom: 5px;
-}
 
 .filtro {
   margin: 10px 0;

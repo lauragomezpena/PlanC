@@ -1,6 +1,6 @@
-import {URL} from '../../constants/url.js';
+import { BASE_URL} from '../../constants/url.js';
 export async function createAuction(token, auctionData) {
-    const response = await fetch(`${URL}/api/auctions/subastas/`, {
+    const response = await fetch(`${BASE_URL}/api/auctions/subastas/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`, // Token de autenticación
@@ -19,7 +19,7 @@ export async function createAuction(token, auctionData) {
 
 
 export async function handleAuction(token, auctionId, method = 'GET', updatedData = null) {
-    const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/`, {
+    const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/`, {
         method: method, // 'GET', 'PUT' o 'DELETE'
         headers: {
             'Authorization': `Bearer ${token}`, // Token de autenticación
@@ -36,24 +36,33 @@ export async function handleAuction(token, auctionId, method = 'GET', updatedDat
     }
 }
 
-export const fetchAuctions = async () => {
-    try {
-      const response = await fetch(`${URL}/api/auctions/subastas/`);
-      if (!response.ok) throw new Error('Error al obtener subastas');
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error en fetchAuctions:", error);
-      return [];
-    }
-  };
 
+// export const fetchAuctions= async (query = '')=> {
+//   const url = query
+//     ? `${URL}/api/auctions/subastas/?search=${encodeURIComponent(query)}`
+//     : `${URL}/api/auctions/subastas/`;
+
+//   const response = await fetch(url);
+//   if (!response.ok) throw new Error("Error al cargar subastas");
+//   return await response.json();
+// }
+
+export const fetchAuctions = async (params = {}) => {
+  const url = new URL(`${BASE_URL}/api/auctions/subastas/`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) url.searchParams.append(key, value);
+  });
+
+  const response = await fetch(url.toString());
+  if (!response.ok) throw new Error("Error al cargar subastas");
+  return await response.json();
+};
 
 
 // Obtener la valoración promedio de una subasta
 export const fetchAverageRating = async (auctionId) => {
     try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/`);
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/`);
       if (!response.ok) {
         throw new Error("Error al obtener la valoración promedio");
       }
@@ -68,7 +77,7 @@ export const fetchAverageRating = async (auctionId) => {
   // Enviar una valoración para una subasta
   export const sendRating = async (auctionId, value, token) => {
     try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/`, {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +102,7 @@ export const fetchAverageRating = async (auctionId) => {
 // Obtener la valoración del usuario para una subasta
 export const fetchUserRating = async (auctionId, token) => {
     try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,7 +127,7 @@ export const fetchUserRating = async (auctionId, token) => {
   // Eliminar la valoración del usuario para una subasta
   export const deleteUserRating = async (auctionId, token) => {
     try {
-      const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

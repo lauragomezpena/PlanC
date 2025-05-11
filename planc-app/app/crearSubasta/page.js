@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { createAuction, fetchCategories } from "./utils";
 
+
 export default function NewAuctionForm() {
   const [categories, setCategories] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
