@@ -1,11 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useRouter  } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Button from "@/components/Button/button";
-import { crearPuja, obtenerSubasta, obtenerPujas, crearComentario, obtenerComentarios, modificarComentario, borrarComentario} from './utils';
+import { 
+  crearPuja, 
+  obtenerSubasta, 
+  obtenerPujas, 
+  crearComentario, 
+  obtenerComentarios, 
+  borrarComentario 
+} from './utils';
 import styles from "./page.module.css";
-import Comentario from './(partials)/Comentario/Comentario'; // ajusta el path
+import Comentario from './(partials)/Comentario/Comentario';
 import Pujas from './(partials)/Puja/Puja';
 
 const DetalleSubasta = () => {
@@ -13,7 +20,6 @@ const DetalleSubasta = () => {
   const id = parseInt(searchParams.get('id'), 10);
 
   const router = useRouter();
-  const [token, setToken] = useState(null);
   const [subasta, setSubasta] = useState(null);
   const [pujas, setPujas] = useState([]);
   const [precioPuja, setPrecioPuja] = useState('');
@@ -24,9 +30,11 @@ const DetalleSubasta = () => {
   const [loadingComentario, setLoadingComentario] = useState(false);
 
   useEffect(() => {
-    setToken(localStorage.getItem('token-jwt'));
-    setUsuario(localStorage.getItem('userName'));
+    const tokenLocal = localStorage.getItem('token-jwt');
+    const userLocal = localStorage.getItem('userName');
+    setUsuario(userLocal);
 
+    if (!tokenLocal) return;
 
     const fetchSubastaYPujasYComentarios = async () => {
       const subastaResult = await obtenerSubasta(id);
@@ -36,27 +44,26 @@ const DetalleSubasta = () => {
         setMensaje(subastaResult.error);
       }
 
-      const pujasResult = await obtenerPujas(id, token);
+      const pujasResult = await obtenerPujas(id, tokenLocal);
       if (pujasResult.success) {
         const ordenadas = pujasResult.pujas.sort((a, b) => b.price - a.price);
         setPujas(ordenadas);
       }
 
-      const comentariosResult = await obtenerComentarios(id, token);
+      const comentariosResult = await obtenerComentarios(id, tokenLocal);
       if (comentariosResult.success) {
         setComentarios(comentariosResult.comentarios);
       }
 
-          setCargando(false);
-        };
-
-
+      setCargando(false);
+    };
 
     fetchSubastaYPujasYComentarios();
-  }, [id, token, usuario]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token-jwt');
     const result = await crearPuja({
       token,
       auctionId: id,
@@ -78,14 +85,15 @@ const DetalleSubasta = () => {
 
   const handleOnSubmitComentario = async (event) => {
     event.preventDefault();
+    const token = localStorage.getItem('token-jwt');
     const formDataRaw = new FormData(event.target);
-    setLoadingComentario(true); 
+    setLoadingComentario(true);
 
-    const commentData = { 
+    const commentData = {
       title: formDataRaw.get('title'),
       text: formDataRaw.get('text'),
     };
-  
+
     try {
       const result = await crearComentario({
         token,
@@ -93,29 +101,37 @@ const DetalleSubasta = () => {
         title: commentData.title,
         text: commentData.text,
       });
-  
+
       if (result.success) {
         setMensaje('Comentario enviado con éxito');
-
+        const comentariosResult = await obtenerComentarios(id, token);
+        if (comentariosResult.success) {
+          setComentarios(comentariosResult.comentarios);
+        }
       } else {
         setMensaje(`${result.error}`);
       }
     } catch (error) {
       setMensaje(`Error al enviar el comentario: ${error.message}`);
     } finally {
-      setLoadingComentario(false); 
+      setLoadingComentario(false);
     }
   };
 
   const handleBorrarComentario = async (comentarioId) => {
     const confirmacion = window.confirm('¿Seguro que quieres borrar este comentario?');
     if (!confirmacion) return;
-  
+
+    const token = localStorage.getItem('token-jwt');
     try {
       const result = await borrarComentario({ token, auctionId: id, comentarioId });
-  
+
       if (result.success) {
         alert('Comentario borrado correctamente.');
+        const comentariosResult = await obtenerComentarios(id, token);
+        if (comentariosResult.success) {
+          setComentarios(comentariosResult.comentarios);
+        }
       } else {
         alert(`Error: ${result.error}`);
       }
@@ -125,16 +141,17 @@ const DetalleSubasta = () => {
     }
   };
 
-const handleEditarComentario = (comentario) => {
-router.push(`/editarComentario/${comentario.id}?auctionId=${id}`);
-};
+  const handleEditarComentario = (comentario) => {
+    router.push(`/editarComentario/${comentario.id}?auctionId=${id}`);
+  };
 
   if (cargando) return <p>Cargando subasta...</p>;
   if (!subasta) return <p>Subasta no encontrada</p>;
 
+  const token = localStorage.getItem('token-jwt');
+
   return (
     <div className={styles.container}>
-      
       <h1>{subasta.title}</h1>
       <p><strong>Precio inicial:</strong> {subasta.starting_price}€</p>
       <p><strong>Descripción: </strong>{subasta.description}</p>
@@ -142,9 +159,7 @@ router.push(`/editarComentario/${comentario.id}?auctionId=${id}`);
       <p><strong>Stock:</strong> {subasta.stock}</p>
       <p>{subasta.isOpen ? 'Subasta abierta' : 'Subasta cerrada'}</p>
 
-      {/* PUJAS */}
       <Pujas pujas={pujas} />
-
 
       {token && subasta.isOpen && (
         <form onSubmit={handleSubmit}>
@@ -156,15 +171,13 @@ router.push(`/editarComentario/${comentario.id}?auctionId=${id}`);
             placeholder="Introduce tu puja"
             required
           />
-          <Button type="submit" label = "Pujar"/>
+          <Button type="submit" label="Pujar" />
           {mensaje && <p>{mensaje}</p>}
         </form>
       )}
 
       {!token && <p>Inicia sesión para poder pujar.</p>}
 
-
-      {/* COMENTARIOS */}
       <Comentario
         comentarios={comentarios}
         usuario={usuario}
@@ -172,29 +185,32 @@ router.push(`/editarComentario/${comentario.id}?auctionId=${id}`);
         handleBorrarComentario={handleBorrarComentario}
       />
 
-      
       {token && subasta.isOpen && (
-      <form onSubmit={handleOnSubmitComentario}>
-        <h2>Dejar un comentario</h2>
-        <div className={styles.inputs}>
-        <input
-          name="title"
-          type="text"
-          placeholder="Título del comentario"
-          required
-        />
-        <br />
-        <input
-          name="text"
-          type="text"
-          placeholder="Escribe tu comentario"
-          required
-        />
-        <br />
-        </div>
-        <Button type="submit" className={styles.btn} 
-          label = {loadingComentario ? 'Enviando...' : 'Enviar comentario'} />
-      </form>)}
+        <form onSubmit={handleOnSubmitComentario}>
+          <h2>Dejar un comentario</h2>
+          <div className={styles.inputs}>
+            <input
+              name="title"
+              type="text"
+              placeholder="Título del comentario"
+              required
+            />
+            <br />
+            <input
+              name="text"
+              type="text"
+              placeholder="Escribe tu comentario"
+              required
+            />
+            <br />
+          </div>
+          <Button
+            type="submit"
+            className={styles.btn}
+            label={loadingComentario ? 'Enviando...' : 'Enviar comentario'}
+          />
+        </form>
+      )}
     </div>
   );
 };
