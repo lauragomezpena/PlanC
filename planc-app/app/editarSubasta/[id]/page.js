@@ -17,7 +17,6 @@ export default function EditAuctionForm() {
     closing_date: "",
     starting_price: "",
     stock: "",
-    rating: "",
     category: "",
     brand: "",
     image: null,
@@ -44,7 +43,6 @@ export default function EditAuctionForm() {
           closing_date: formattedDate,
           starting_price: auction.starting_price,
           stock: auction.stock,
-          rating: auction.rating,
           category: auction.category,
           brand: auction.brand,
           image: null,
@@ -129,9 +127,6 @@ export default function EditAuctionForm() {
 
       <label htmlFor="stock" className={styles.label}>Stock</label>
       <input type="number" name="stock" value={formData.stock} onChange={handleChange} className={styles.input} required />
-
-      <label htmlFor="rating" className={styles.label}>Valoración (1-5)</label>
-      <input type="number" min="1" max="5" step="1" name="rating" value={formData.rating} onChange={handleChange} className={styles.input} required />
 
       <label htmlFor="category" className={styles.label}>Categoría</label>
       <select name="category" value={formData.category} onChange={handleChange} className={styles.input} required>
