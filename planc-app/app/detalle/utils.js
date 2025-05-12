@@ -1,4 +1,5 @@
 import {URL} from '../../constants/url.js';
+import { BASE_URL } from '../../constants/url.js';
 
 // PUJA 
 export async function crearPuja({ token, auctionId, price }) {
@@ -128,3 +129,94 @@ export async function crearPuja({ token, auctionId, price }) {
       return { success: false, error: error.message };
     }
   }
+
+// RATINGS 
+
+export const fetchAverageRating = async (auctionId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/`);
+      if (!response.ok) {
+        throw new Error("Error al obtener la valoración promedio");
+      }
+      const data = await response.json();
+      return data.average_rating;
+    } catch (error) {
+      console.error("Error en fetchAverageRating:", error);
+      throw error;
+    }
+  };
+
+
+  
+  // Enviar una valoración para una subasta
+  export const sendRating = async (auctionId, value, token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ value }),
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || "Error al enviar la valoración");
+      }
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error en sendRating:", error);
+      throw error;
+    }
+  };
+
+
+// Obtener la valoración del usuario para una subasta
+export const fetchUserRating = async (auctionId, token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null; // El usuario no ha valorado la subasta
+        }
+        throw new Error("Error al obtener la valoración del usuario");
+      }
+  
+      const data = await response.json();
+      return data.rating; 
+    } catch (error) {
+      console.error("Error en fetchUserRating:", error);
+      throw error;
+    }
+  };
+  
+  // Eliminar la valoración del usuario para una subasta
+  export const deleteUserRating = async (auctionId, token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/ratings/user/`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al eliminar la valoración");
+      }
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error en deleteUserRating:", error);
+      throw error;
+    }
+  };
+
+export default deleteUserRating

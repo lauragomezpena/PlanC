@@ -14,6 +14,7 @@ import {
 import styles from "./page.module.css";
 import Comentario from './(partials)/Comentario/Comentario';
 import Pujas from './(partials)/Puja/Puja';
+import Ratings from './(partials)/Rating/Rating';
 
 const DetalleSubasta = () => {
   const searchParams = useSearchParams();
@@ -177,7 +178,9 @@ const DetalleSubasta = () => {
       )}
 
       {!token && <p>Inicia sesión para poder pujar.</p>}
-
+      <Ratings
+      auctionId={id}
+      />
       <Comentario
         comentarios={comentarios}
         usuario={usuario}
