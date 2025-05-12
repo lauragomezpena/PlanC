@@ -7,7 +7,8 @@ import {
   deleteUserRating,
   fetchUserRating,
 } from "../../utils";
-import styles from "./styles.module.css";
+import Button from "@/components/Button/button"; // ya con estilos integrados
+import styles from "./styles.module.css"
 
 const Ratings = ({ auctionId }) => {
   const [userRating, setUserRating] = useState(null);
@@ -68,9 +69,7 @@ const Ratings = ({ auctionId }) => {
       {userRating !== null ? (
         <div style={{ textAlign: "center" }}>
           <p>Tu valoración: {userRating}</p>
-          <button className={styles.buttonDelete} onClick={handleDeleteRating}>
-            Eliminar valoración
-          </button>
+          <Button label="Eliminar valoración" onClick={handleDeleteRating} className={styles.buttonDelete}/>
         </div>
       ) : (
         <div style={{ textAlign: "center" }}>
@@ -91,9 +90,7 @@ const Ratings = ({ auctionId }) => {
             min="1"
             max="5"
           />
-          <button className={styles.button} onClick={handleRate}>
-            Enviar valoración
-          </button>
+          <Button label="Enviar valoración" onClick={handleRate} />
         </div>
       )}
     </>
