@@ -49,6 +49,7 @@ const Auctions = () => {
               open={auction.isOpen}
               descripcion={auction.description}
               categoria={auction.category_name}
+              imagen = {auction.image}
             />
           ))
         ) : (
