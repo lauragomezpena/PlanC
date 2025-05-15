@@ -25,13 +25,12 @@ export async function crearPuja({ token, auctionId, price }) {
     }
   }
 
-   export const obtenerPujas = async (auctionId, token) => {
+   export const obtenerPujas = async (auctionId) => {
     try {
       const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/pujas/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` })
         }
       });
   
@@ -88,13 +87,12 @@ export async function crearPuja({ token, auctionId, price }) {
     }
   }
   
-  export const obtenerComentarios = async (auctionId, token) => {
+  export const obtenerComentarios = async (auctionId) => {
     try {
       const response = await fetch(`${URL}/api/auctions/subastas/${auctionId}/comentarios/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         }
       });
   

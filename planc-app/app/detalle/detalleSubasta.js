@@ -45,15 +45,15 @@ const DetalleSubasta = () => {
         setMensaje(subastaResult.error);
       }
 
-      if (tokenLocal)
+
       {
-      const pujasResult = await obtenerPujas(id, tokenLocal);
+      const pujasResult = await obtenerPujas(id);
       if (pujasResult.success) {
         const ordenadas = pujasResult.pujas.sort((a, b) => b.price - a.price);
         setPujas(ordenadas);
       }
 
-      const comentariosResult = await obtenerComentarios(id, tokenLocal);
+      const comentariosResult = await obtenerComentarios(id);
       if (comentariosResult.success) {
         setComentarios(comentariosResult.comentarios);
       }}
