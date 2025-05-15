@@ -15,10 +15,10 @@ const Comentario= ({comentarios, usuario, handleEditarComentario, handleBorrarCo
               <div className={styles.contenidoComentario}>
 
               <p>{comentario.title}: {comentario.text}</p>
-              {usuario === comentario.username && (
+              {usuario?.trim().toLowerCase() === comentario.username?.trim().toLowerCase() && (
               <div className={styles.botones}>
-                <button  className={styles.botonComentario} onClick={() => handleEditarComentario(comentario)}>Editar</button>
-                <button  className={styles.botonComentario} onClick={() => handleBorrarComentario(comentario.id)}>Borrar</button>
+                <button  className={styles.formButton} onClick={() => handleEditarComentario(comentario)}>Editar</button>
+                <button  className={styles.formButtonDelete} onClick={() => handleBorrarComentario(comentario.id)}>Borrar</button>
               </div>
                 )}
                 </div>

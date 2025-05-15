@@ -7,10 +7,12 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function EditAuctionForm() {
   const router = useRouter();
-  const { id: auctionId } = useParams(); // obtener ID desde la URL
+  const { id: auctionId } = useParams();
   const [categories, setCategories] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -29,7 +31,6 @@ export default function EditAuctionForm() {
           fetchCategories(),
           fetchAuctionById(auctionId),
         ]);
-
 
         setCategories(cats);
 
@@ -75,6 +76,7 @@ export default function EditAuctionForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
 
     try {
       const closingDate = new Date(formData.closing_date);
@@ -82,16 +84,17 @@ export default function EditAuctionForm() {
 
       const updatedData = {
         ...formData,
+        category: parseInt(formData.category), // asegúrate que sea número
         closing_date: closingDate.toISOString(),
       };
 
       await updateAuction(auctionId, updatedData);
 
       alert("Subasta actualizada correctamente.");
-      router.push("/"); // Redirige a la home
+      router.push("/");
     } catch (error) {
       console.error("Error al actualizar la subasta:", error);
-      alert("No se pudo actualizar la subasta.");
+      setErrorMsg("No se pudo actualizar la subasta. Revisa los campos.");
     }
   };
 
@@ -102,7 +105,7 @@ export default function EditAuctionForm() {
     try {
       await deleteAuction(auctionId);
       alert("Subasta eliminada correctamente.");
-      router.push("/"); // Redirige a la home
+      router.push("/");
     } catch (error) {
       console.error("Error al eliminar subasta:", error);
       alert("No se pudo eliminar la subasta.");
@@ -113,6 +116,10 @@ export default function EditAuctionForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>Editar Subasta</h2>
+
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+
       <label htmlFor="title" className={styles.label}>Título</label>
       <input name="title" value={formData.title} onChange={handleChange} className={styles.input} required />
 
@@ -142,7 +149,7 @@ export default function EditAuctionForm() {
       <label htmlFor="image" className={styles.label}>Imagen</label>
       <input type="file" name="image" accept="image/*" onChange={handleChange} className={styles.input} />
 
-      {imagePreview && <img src={imagePreview} alt="Preview" className={styles.previewImage} />}
+      {imagePreview && <img src={imagePreview} alt="Vista previa" className={styles.previewImage} />}
 
       <div className={styles.buttonGroup}>
         <button type="submit" className={styles.formButtonSubmit}>Confirmar cambios</button>
