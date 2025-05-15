@@ -1,4 +1,5 @@
 import {URL} from '../../constants/url.js';
+
 export const doRegister = async (userData) => {
     const response = await fetch(`${URL}/api/users/register/`, 
         {

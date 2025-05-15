@@ -1,5 +1,6 @@
 
 import {URL} from '../../constants/url.js';
+
 export const createAuction = async (formData) => {
     const token = localStorage.getItem("token-jwt");
     const payload = new FormData();
@@ -21,7 +22,7 @@ export const createAuction = async (formData) => {
         throw new Error("Error al crear la subasta.");
       }
   
-      return await response.json();  // Deberías devolver la respuesta del servidor si es necesario
+      return await response.json(); 
     } catch (error) {
       throw error;
     }

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './styles.module.css';
 import myImage from '@/public/logo.jpg';
+import Button from "../Button/button";
 
 export default function Header() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function Header() {
   const [userName, setUserName] = useState(null);
 
   useEffect(() => {
-    // Acceder a localStorage solo en el cliente
+    
     if (typeof window !== 'undefined') {
       setToken(localStorage.getItem("token-jwt"));
       setUserName(localStorage.getItem("userName"));
@@ -58,6 +59,12 @@ export default function Header() {
   const handlePujas = () =>{
     router.push('/misPujas');
   };
+  const handleComentarios = () =>{
+    router.push('/misComentarios');
+  };
+  const handleRatings = () =>{
+    router.push('/misRatings');
+  };
   return (
     <header className={styles.header}>
       <Link href="/" passHref>
@@ -73,34 +80,30 @@ export default function Header() {
       <nav className={styles.navLink}>
         {token ? (
           <div className={styles.formButtons}>
-            <button onClick={handleCuenta} className={styles.formButton}>
-              Mi Cuenta
-            </button>
-            <button onClick={handleSubastas} className={styles.formButton}>
-              Mis Subastas
-            </button>
+ 
+            <Button
+            label="Mi cuenta"
+            type="submit"
+            onClick={handleCuenta} 
+            />
+            
+            <Button label = "Mis Subastas" onClick={handleSubastas}/>
             <a />
-            <button onClick={handlePujas} className={styles.formButton}>
-              Mis Pujas
-            </button>
+            <Button label = "Mis Pujas" onClick={handlePujas}/>
             <a />
-            <button onClick={handleLogout} className={styles.formButton}>
-              Cerrar sesión
-            </button>
+            <Button label = "Mis Comentarios" onClick={handleComentarios}/>
             <a />
-            <button onClick={handleCrear} className={styles.formButton}>
-              +
-            </button>
+            <Button label = "Mis Ratings" onClick={handleRatings}/>
+            <a />
+            <Button label = "Cerrar sesión" onClick={handleLogout} />
+            <a />
+            <Button label = "+" onClick={handleCrear} />
           </div>
         ) : (
           <>
-            <button onClick={handleInicio} className={styles.formButton}>
-              Iniciar sesión
-            </button>
+            <Button label = "Iniciar sesión" onClick={handleInicio}/>
             <a />
-            <button onClick={handleRegistro} className={styles.formButton}>
-              Registrarse
-            </button>
+            <Button label ="Registrarse" onClick={handleRegistro}/>
           </>
         )}
       </nav>

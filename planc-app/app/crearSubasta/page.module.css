@@ -30,6 +30,10 @@
     color: #fff;
   }
 
+.formButtonSubmit:hover {
+    background-color: #4f6b9c;
+}
+
 .form {
     display: flex;
     flex-direction: column;

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from "../page.module.css";
 import { fetchUserProfileData, changePassword } from './utils';
+import Button from '@/components/Button/button';
 
 export default function UserProfilePage() {
   const [profileData, setProfileData] = useState({
@@ -147,7 +148,7 @@ export default function UserProfilePage() {
           </label>
           {passwordError && <p className={styles.error}>{passwordError}</p>}
           {passwordSuccess && <p className={styles.success}>{passwordSuccess}</p>}
-          <button type="submit">Cambiar contraseña</button>
+          <Button type="submit" label  = "Cambiar contraseña"/>
         </form>
       </div>
     </div>

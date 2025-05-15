@@ -69,7 +69,7 @@ const MisSubastas = () => {
       {subastas.length > 0 ? (
         <ul>
           {subastas.map((subasta) => (
-            <p key={subasta.id} style={{ marginBottom: '1rem' }}>
+            <p key={subasta.id}>
               <strong>{subasta.title}</strong> - {subasta.starting_price}€
               <br />
               <button onClick={() => handleEditar(subasta.id)} className={styles.formButton}>

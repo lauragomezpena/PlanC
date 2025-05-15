@@ -3,7 +3,7 @@ import styles from "./styles.module.css";
 
 const Button = ({className, label, onClick, type}) => { 
     return (
-        <button className={`${styles.button} ${className}`} onClick={onClick} type={type}>
+        <button className={`${styles.button}${className ? ` ${className}` : ''}`} onClick={onClick} type={type}>
             {label}
         </button>       
     );};

@@ -32,3 +32,9 @@
 .formButton:hover {
     background-color: #7c8084;
   }
+
+
+.puja{
+    margin-bottom: '1rem' ;
+    list-style: none;
+  }

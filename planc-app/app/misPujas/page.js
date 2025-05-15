@@ -61,7 +61,7 @@ const MisPujas = () => {
       {pujas.length > 0 ? (
         <ul>
           {pujas.map((puja) => (
-            <li key={puja.id} style={{ marginBottom: '1rem' }}>
+            <li key={puja.id} className={styles.puja}>
               Has pujado en la subasta <strong>{puja.title}</strong> : {puja.price}€
               <br />
               <button onClick={() => router.push(`/editarPuja/${puja.id}`)} className={styles.formButton}>

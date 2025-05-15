@@ -1,6 +1,6 @@
 'use client';
 
-import styles from "../page.module.css";
+import styles from "./page.module.css";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LocalityMunicipalitySelector from "./(partials)/LocalityMunicipalitySelector";  
