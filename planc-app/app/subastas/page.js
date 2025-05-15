@@ -7,6 +7,7 @@ import AuctionCard from './(partials)/AuctionCard/AuctionCard';
 import { fetchAuctions } from './utils';
 
 const Auctions = () => {
+  
   const searchParams = useSearchParams();
   const filters = {
   search: searchParams.get('q')?.toLowerCase() || '',
@@ -26,12 +27,6 @@ const Auctions = () => {
   };
   loadAuctions();
 }, [searchParams.toString()]);
-
-  // const filteredAuctions = auctions.filter((auction) =>
-  //   auction.title.toLowerCase().includes(query) ||
-  //   auction.description.toLowerCase().includes(query) ||
-  //   auction.category_name.toLowerCase().includes(query)
-  // );
 
   return (
     <>

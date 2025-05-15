@@ -1,11 +1,12 @@
 import {URL} from '../../constants/url.js';
+
 export const obtenerMisPujas = async (token) => {
   try {
     const response = await fetch(`${URL}/api/auctions/misPujas/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Enviar el token de autenticación
+        Authorization: `Bearer ${token}`, 
       },
     });
 

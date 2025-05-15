@@ -42,3 +42,12 @@
     background-color: #4f6b9c;
   }
   
+.inputRating {
+
+  display: 'block';
+  margin: '0.5rem auto';
+  padding: '8px';
+  border-radius: '6px';
+  border: '1px solid #ccc';
+  font-size: '1rem';
+}

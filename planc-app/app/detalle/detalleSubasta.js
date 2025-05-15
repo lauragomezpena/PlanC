@@ -35,7 +35,7 @@ const DetalleSubasta = () => {
     const userLocal = localStorage.getItem('userName');
     setUsuario(userLocal);
 
-    if (!tokenLocal) return;
+    // if (!tokenLocal) return;
 
     const fetchSubastaYPujasYComentarios = async () => {
       const subastaResult = await obtenerSubasta(id);
@@ -45,6 +45,8 @@ const DetalleSubasta = () => {
         setMensaje(subastaResult.error);
       }
 
+      if (tokenLocal)
+      {
       const pujasResult = await obtenerPujas(id, tokenLocal);
       if (pujasResult.success) {
         const ordenadas = pujasResult.pujas.sort((a, b) => b.price - a.price);
@@ -54,7 +56,7 @@ const DetalleSubasta = () => {
       const comentariosResult = await obtenerComentarios(id, tokenLocal);
       if (comentariosResult.success) {
         setComentarios(comentariosResult.comentarios);
-      }
+      }}
 
       setCargando(false);
     };

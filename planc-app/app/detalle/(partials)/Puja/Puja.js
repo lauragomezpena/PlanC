@@ -6,7 +6,6 @@ const Pujas= ({pujas})=> {
     return (
         <div>
         <h2>Pujas actuales</h2>
-
       {pujas.length > 0 ? (
         <ul className={styles.pujaList}>
           {pujas.map((puja) => (

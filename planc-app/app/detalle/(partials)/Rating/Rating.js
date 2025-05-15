@@ -1,30 +1,37 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   fetchAverageRating,
   sendRating,
   deleteUserRating,
   fetchUserRating,
-} from "../../utils";
-import Button from "@/components/Button/button"; // ya con estilos integrados
-import styles from "./styles.module.css"
+} from '../../utils';
+import Button from '@/components/Button/button';
+import styles from './styles.module.css';
 
 const Ratings = ({ auctionId }) => {
   const [userRating, setUserRating] = useState(null);
   const [averageRating, setAverageRating] = useState(null);
   const [rating, setRating] = useState(1);
+  const [token, setToken] = useState(null);
 
   const loadRatings = async () => {
     try {
+      // Obtener rating promedio siempre (público)
       const avgRating = await fetchAverageRating(auctionId);
       setAverageRating(avgRating);
 
-      const token = localStorage.getItem("token-jwt");
-      const userRatingResult = await fetchUserRating(auctionId, token);
-      setUserRating(userRatingResult);
+      // Obtener rating del usuario solo si hay token
+      setToken(localStorage.getItem('token-jwt'));
+      if (token) {
+        const userRatingResult = await fetchUserRating(auctionId, token);
+        setUserRating(userRatingResult);
+      } else {
+        setUserRating(null); // importante: para evitar valores undefined
+      }
     } catch (error) {
-      console.error("Error al cargar ratings", error);
+      console.error('Error al cargar ratings', error);
     }
   };
 
@@ -33,9 +40,9 @@ const Ratings = ({ auctionId }) => {
   }, [auctionId]);
 
   const handleRate = async () => {
-    const token = localStorage.getItem("token-jwt");
+    const token = localStorage.getItem('token-jwt');
     if (!token) {
-      alert("Debes iniciar sesión para calificar");
+      alert('Debes iniciar sesión para calificar');
       return;
     }
 
@@ -44,45 +51,49 @@ const Ratings = ({ auctionId }) => {
       setUserRating(rating);
       await loadRatings();
     } catch (error) {
-      console.error("Error al calificar", error);
+      console.error('Error al calificar', error);
     }
   };
 
   const handleDeleteRating = async () => {
+    const token = localStorage.getItem('token-jwt');
+    if (!token) {
+      alert('Debes iniciar sesión');
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token-jwt");
       await deleteUserRating(auctionId, token);
       setUserRating(null);
       await loadRatings();
     } catch (error) {
-      console.error("Error al borrar rating", error.message);
+      console.error('Error al borrar rating', error.message);
     }
   };
 
   return (
     <>
-      <p style={{ textAlign: "center" }}>
-        Valoración media:{" "}
-        {averageRating !== null ? `${averageRating} / 5` : "Sin valoraciones aún"}
+      <h2>Valoraciones</h2>
+      <p>
+        Valoración media:{' '}
+        {averageRating !== null ? `${averageRating} / 5` : 'Sin valoraciones aún'}
       </p>
 
       {userRating !== null ? (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: 'center' }}>
           <p>Tu valoración: {userRating}</p>
-          <Button label="Eliminar valoración" onClick={handleDeleteRating} className={styles.buttonDelete}/>
+          <Button
+            label="Eliminar valoración"
+            onClick={handleDeleteRating}
+            className={styles.buttonDelete}
+          />
         </div>
       ) : (
-        <div style={{ textAlign: "center" }}>
+        token?
+        (<div style={{ textAlign: 'center' }}>
           <label htmlFor={`rating-${auctionId}`}>Valora la subasta:</label>
           <input
-            style={{
-              display: "block",
-              margin: "0.5rem auto",
-              padding: "8px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              fontSize: "1rem",
-            }}
+            className={styles.inputRating}
             type="number"
             id={`rating-${auctionId}`}
             value={rating}
@@ -92,6 +103,7 @@ const Ratings = ({ auctionId }) => {
           />
           <Button label="Enviar valoración" onClick={handleRate} />
         </div>
+        ): null
       )}
     </>
   );

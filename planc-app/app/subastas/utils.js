@@ -3,15 +3,15 @@ export async function createAuction(token, auctionData) {
     const response = await fetch(`${BASE_URL}/api/auctions/subastas/`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`, // Token de autenticación
+            'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(auctionData), // Datos de la nueva subasta
+        body: JSON.stringify(auctionData), 
     });
 
     const data = await response.json();
     if (response.ok) {
-        return data; // Subasta creada
+        return data;
     } else {
         throw new Error('No se pudo crear la subasta');
     }
@@ -20,32 +20,21 @@ export async function createAuction(token, auctionData) {
 
 export async function handleAuction(token, auctionId, method = 'GET', updatedData = null) {
     const response = await fetch(`${BASE_URL}/api/auctions/subastas/${auctionId}/`, {
-        method: method, // 'GET', 'PUT' o 'DELETE'
+        method: method,
         headers: {
-            'Authorization': `Bearer ${token}`, // Token de autenticación
+            'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json',
         },
-        body: method === 'PUT' ? JSON.stringify(updatedData) : null, // Solo enviar body si es 'PUT'
+        body: method === 'PUT' ? JSON.stringify(updatedData) : null, 
     });
 
     const data = await response.json();
     if (response.ok) {
-        return data; // Resultado de la operación
+        return data; 
     } else {
         throw new Error(`No se pudo completar la operación: ${method}`);
     }
 }
-
-
-// export const fetchAuctions= async (query = '')=> {
-//   const url = query
-//     ? `${URL}/api/auctions/subastas/?search=${encodeURIComponent(query)}`
-//     : `${URL}/api/auctions/subastas/`;
-
-//   const response = await fetch(url);
-//   if (!response.ok) throw new Error("Error al cargar subastas");
-//   return await response.json();
-// }
 
 export const fetchAuctions = async (params = {}) => {
   const url = new URL(`${BASE_URL}/api/auctions/subastas/`);

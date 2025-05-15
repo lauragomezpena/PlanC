@@ -10,8 +10,10 @@ const Comentario= ({comentarios, usuario, handleEditarComentario, handleBorrarCo
         <ul>
           {comentarios.map((comentario) => (
             <li key={comentario.id} className={styles.comentario}>
-                <div className={styles.contenidoComentario}>
-              <strong>{comentario.username}</strong>
+              <p><strong>{comentario.username} </strong>
+              {comentario.modification_date}</p>
+              <div className={styles.contenidoComentario}>
+
               <p>{comentario.title}: {comentario.text}</p>
               {usuario === comentario.username && (
               <div className={styles.botones}>

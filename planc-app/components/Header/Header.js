@@ -59,6 +59,12 @@ export default function Header() {
   const handlePujas = () =>{
     router.push('/misPujas');
   };
+  const handleComentarios = () =>{
+    router.push('/misComentarios');
+  };
+  const handleRatings = () =>{
+    router.push('/misRatings');
+  };
   return (
     <header className={styles.header}>
       <Link href="/" passHref>
@@ -85,13 +91,16 @@ export default function Header() {
             <a />
             <Button label = "Mis Pujas" onClick={handlePujas}/>
             <a />
+            <Button label = "Mis Comentarios" onClick={handleComentarios}/>
+            <a />
+            <Button label = "Mis Ratings" onClick={handleRatings}/>
+            <a />
             <Button label = "Cerrar sesión" onClick={handleLogout} />
             <a />
             <Button label = "+" onClick={handleCrear} />
           </div>
         ) : (
           <>
-
             <Button label = "Iniciar sesión" onClick={handleInicio}/>
             <a />
             <Button label ="Registrarse" onClick={handleRegistro}/>

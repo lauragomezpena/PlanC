@@ -51,6 +51,7 @@ export async function crearPuja({ token, auctionId, price }) {
   // SUBASTA
   export const obtenerSubasta = async (id) => {
     try {
+      console.log('OBTENER SUBASTA')
       const response = await fetch(`${URL}/api/auctions/subastas/${id}/`);
       if (!response.ok) {
         throw new Error('No se pudo obtener la subasta');

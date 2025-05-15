@@ -1,32 +1,32 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { obtenerMisComentarios, obtenerSubasta } from './utils';  
+import { obtenerMisRatings, obtenerSubasta } from './utils';  
 import styles from './page.module.css';
 
 const MisComentarios = () => {
-  const [comentarios, setComentarios] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [cargando, setCargando] = useState(true);
   const router = useRouter();
   const token = typeof window !== 'undefined' ? localStorage.getItem('token-jwt') : null;
 
   useEffect(() => {
-    const fetchComentarios = async () => {
-      const result = await obtenerMisComentarios(token);
+    const fetchRatings = async () => {
+      const result = await obtenerMisRatings(token);
 
       if (result.success) {
 
-        const comentariosConSubasta = await Promise.all(
-          result.pujas.map(async (comentario) => {
-            const subastaResponse = await obtenerSubasta(comentario.auction);
+        const ratingsConSubasta = await Promise.all(
+          result.pujas.map(async (rating) => {
+            const subastaResponse = await obtenerSubasta(rating.auction);
             return {
-              ...comentario,
+              ...rating,
               subasta: subastaResponse.success ? subastaResponse.subasta : null,
             };
           })
         );
-        setComentarios(comentariosConSubasta);
+        setRatings(ratingsConSubasta);
       } else {
         setMensaje(result.error);
       }
@@ -34,7 +34,7 @@ const MisComentarios = () => {
     };
 
     if (token) {
-      fetchComentarios();
+      fetchRatings();
     } else {
       setMensaje('Por favor, inicia sesión para ver tus comentarios');
       setCargando(false);
@@ -45,20 +45,20 @@ const MisComentarios = () => {
 
   return (
     <div>
-      <h1>Mis comentarios</h1>
+      <h1>Mis ratings</h1>
       {mensaje && <p>{mensaje}</p>}
-      {comentarios.length > 0 ? (
+      {ratings.length > 0 ? (
         <ul>
-          {comentarios.map((comentario) => (
-            <li key={comentario.id} className={styles.comentario}>
-              {comentario.subasta ? (
+          {ratings.map((rating) => (
+            <li key={rating.id} className={styles.comentario}>
+              {rating.subasta ? (
                 <>
                   <p>
-                    Has hecho un comentario en la subasta <strong>{comentario.subasta.title} </strong> 
-                    de precio <strong>{` ${comentario.subasta.starting_price}€`}</strong>
-                    {`, subasta ${comentario.subasta.isOpen ? 'abierta' : 'cerrada'}`}:
+                    Has hecho una valoración en la subasta <strong>{rating.subasta.title} </strong> 
+                    de precio <strong>{` ${rating.subasta.starting_price}€`}</strong>
+                    {`, subasta ${rating.subasta.isOpen ? 'abierta' : 'cerrada'}`}:
                   </p>
-                  <p><strong>{comentario.title}: </strong><em>{comentario.text}</em></p>
+                  <p>Tu valoración: <strong>{rating.value}</strong></p>
                 </>
               ) : (
                 <p>No se pudo cargar la subasta asociada a este comentario.</p>
